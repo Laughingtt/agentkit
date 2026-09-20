@@ -1002,6 +1002,37 @@ which mmdc || echo "未安装 mermaid-cli，跳过本地校验"
 
 如已安装 `mmdc`，可对每个 .md 提取 mermaid 代码块单独校验。如未安装，至少做肉眼检查：用 grep 找到所有 ```mermaid 起止块，确认语法无 `graph LR`/`graph TD` 之外的不规范类型。
 
+- [ ] **Step 1.5：全量链接验证（CLAUDE.md §十三 写后审查的核心）**
+
+抽取 5 个章节中所有 markdown 链接，逐个 WebFetch 验证可达 + 标题正确：
+
+```bash
+cd /data/projects/agentkit/part-1-大模型基础
+grep -hoE '\[([^]]+)\]\((https?://[^)]+)\)' ch0*.md | sort -u > /tmp/part1-links.txt
+wc -l /tmp/part1-links.txt
+```
+
+对每个 URL 用 WebFetch 验证：
+- HTTP 状态 200
+- 页面标题与引用内容匹配（论文标题、博客标题等）
+
+对失败的链接：
+- 找一个 canonical 替代 URL（如 Krizhevsky CIFAR → NeurIPS 2012 paper）
+- 更新到章节文件
+- 重新 commit
+
+- [ ] **Step 1.6：全量事实核查**
+
+对以下事实逐项 WebSearch 确认：
+
+- 引用的论文标题/作者/年份/期刊
+- 引用的数据集（如 MNIST、ImageNet）首次提出的论文
+- 引用的方法名称首次提出位置（如 Adam、Dropout、BatchNorm、LayerNorm、ReLU、GELU、LoRA、QLoRA、GRPO、DPO、PPO）
+- 引用的 benchmark 分数和模型规格
+- 任何"X 是 Y" 的具体声明
+
+记录在 task-6-report.md 的"事实核查清单"。
+
 - [ ] **Step 3：所有 Python 代码可运行**
 
 ```bash
