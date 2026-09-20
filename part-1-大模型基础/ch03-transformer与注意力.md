@@ -203,7 +203,7 @@ x = x + ffn_out
 
 ## 3.7 Decoder-only vs Encoder-Decoder
 
-Transformer 论文（2017）描述的是 **Encoder-Decoder**：Encoder "读懂"输入，Decoder "生成"输出。但 2018 年后社区发现更简单的替代——**Decoder-only**：只保留 Decoder，一次看完 prompt 再续写。今天 GPT、LLaMA、Qwen、DeepSeek、Claude 清一色都是 Decoder-only。
+Transformer 论文（2017）描述的是 **Encoder-Decoder**：Encoder "读懂"输入，Decoder "生成"输出。但 2018 年后社区发现更简单的替代——**Decoder-only**：只保留 Decoder，一次看完 prompt 再续写。今天 GPT、LLaMA、Qwen 等主流模型清一色都是 Decoder-only。
 
 **对话模式类比**：
 
