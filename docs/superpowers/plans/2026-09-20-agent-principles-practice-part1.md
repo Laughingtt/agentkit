@@ -271,11 +271,11 @@ graph TD
 
 ```bash
 cd /data/projects/agentkit/part-1-大模型基础
-wc -w ch01-ai-ml-dl-概览.md
+wc -m ch01-ai-ml-dl-概览.md
 grep -c "## " ch01-ai-ml-dl-概览.md
 ```
 
-期望：字数在 2800-3600 之间（3-4k 范围的 -20%）；二级标题数量 = 12（本章目标 + 本章导览 + 6 个子节 + 本章小结 + 本章参考 + 顶部 #）。
+期望：`wc -m` 在 5500-7500 之间（中文 char target 2800-3600 乘以 ~2 的 markdown 系数）；二级标题数量 = 10（本章目标 + 本章导览 + 6 子节 + 本章小结 + 本章参考）。
 
 - [ ] **Step 11：Commit**
 
@@ -453,10 +453,10 @@ graph LR
 
 ```bash
 cd /data/projects/agentkit/part-1-大模型基础
-wc -w ch02-神经网络与深度学习.md
+wc -m ch02-神经网络与深度学习.md
 ```
 
-期望：2800-3600 字。
+期望：`wc -m` 在 5500-7500 之间（中文 target 2800-3600）。
 
 - [ ] **Step 9：Commit**
 
@@ -659,10 +659,10 @@ Attention(Q, K, V) = softmax(Q Kᵀ / √dₖ) V
 
 ```bash
 cd /data/projects/agentkit/part-1-大模型基础
-wc -w ch03-transformer与注意力.md
+wc -m ch03-transformer与注意力.md
 ```
 
-期望：4000-5500 字（4.5-5.5k 范围）。
+期望：`wc -m` 在 8000-11000 之间（中文 target 4000-5500）。
 
 - [ ] **Step 10：Commit**
 
@@ -827,10 +827,10 @@ graph LR
 
 ```bash
 cd /data/projects/agentkit/part-1-大模型基础
-wc -w ch04-预训练与微调.md
+wc -m ch04-预训练与微调.md
 ```
 
-期望：3600-5000 字（4-5k 范围）。
+期望：`wc -m` 在 7200-10000 之间（中文 target 3600-5000）。
 
 - [ ] **Step 9：Commit**
 
@@ -959,10 +959,10 @@ graph LR
 
 ```bash
 cd /data/projects/agentkit/part-1-大模型基础
-wc -w ch05-rlhf与对齐.md
+wc -m ch05-rlhf与对齐.md
 ```
 
-期望：3600-5000 字（4-5k 范围）。
+期望：`wc -m` 在 7200-10000 之间（中文 target 3600-5000）。
 
 - [ ] **Step 9：Commit**
 
@@ -1018,14 +1018,14 @@ python code/part-1/tokenize_demo.py
 ```bash
 cd /data/projects/agentkit/part-1-大模型基础
 for f in ch0*.md; do
-  echo "$f: $(wc -w < "$f")"
+  echo "$f: $(wc -m < "$f")"
 done
-echo "TOTAL: $(cat ch0*.md | wc -w)"
+echo "TOTAL: $(cat ch0*.md | wc -m)"
 ```
 
 期望：
 - 每章在自身目标区间
-- TOTAL 在 18000-22000
+- TOTAL `wc -m` 在 36000-44000（中文 18000-22000）
 
 - [ ] **Step 5：内部一致性自查**
 
@@ -1052,7 +1052,7 @@ git commit -m "Mark Part 1 as 已发布"
 
 - [ ] 5 章 markdown 全部在 `part-1-大模型基础/` 下
 - [ ] 3 个 Python 示例文件全部在 `code/part-1/` 下且运行通过
-- [ ] Part 1 总字数 18000-22000
+- [ ] Part 1 总字数 `wc -m` 36000-44000（中文 18000-22000）
 - [ ] Mermaid 图全部使用 graph / flowchart / sequenceDiagram / mindmap 四种类型之一
 - [ ] 每章含 "本章目标"、"本章小结"、"本章参考"
 - [ ] README.md 中 Part 1 状态为"已发布"
