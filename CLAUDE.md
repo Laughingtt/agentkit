@@ -20,16 +20,24 @@
 
 每个 Part 独立走 `brainstorm → spec → plan → 写作` 流程。
 
-### 各 Part 必须覆盖的子主题（参考 2025 主流 Agent 书目录）
+### 各 Part 必须覆盖的子主题（参考 2026 主流 Agent 产品）
 
-| Part | 必须覆盖 |
+**基准产品**：Claude Code（Anthropic）、Pi Coding Agent（earendil-works）、OpenAI Codex CLI——三个主流 coding agent CLI。Parts 4-6 应以其设计选择为参照。
+
+**协议栈（2026 已标准化）**：
+- **MCP**（Model Context Protocol）—— 工具访问事实标准；2025.12 进入 Linux Foundation AAIF
+- **A2A**（Agent-to-Agent）—— 多 Agent 协作标准；2026.04 v1.0，150+ 组织支持
+- **x402 / AP2** —— 支付协议
+- **AG-UI** —— UI 协议
+
+| Part | 必须覆盖（2026 视角） |
 |---|---|
-| 1 大模型基础 | AI/ML/DL、Transformer、预训练、SFT、RLHF、对齐 |
-| 2 LLM 与 Agent 演进 | LLM 家族史（BERT/GPT/T5/LLaMA/Qwen/DeepSeek…）；Agent 从 Symbolic → Reactive → Cognitive → LLM-based 的演进 |
-| 3 Agent 原理 | 认知架构（perception/memory/planning/action）；范式（ReAct/Reflexion/Plan-and-Execute/AutoGPT） |
-| 4 Harness 工程 | 工具/MCP（Model Context Protocol）、sandbox、上下文工程、记忆、hooks、permissions |
-| 5 Agent 功能实现 | tool calling、RAG、记忆、规划、多 Agent 协作、code execution、MCP 集成 |
-| 6 工业落地 | 部署、可观测性、evaluation（LLM-as-judge、benchmark）、security/红队、cost control、真实案例 |
+| 1 大模型基础 | AI/ML/DL、Transformer、预训练、SFT、RLHF/对齐（DPO/GRPO/PRM） |
+| 2 LLM 与 Agent 演进 | LLM 家族史（BERT/GPT/T5/LLaMA/Qwen/DeepSeek/Jamba/SSM混合…）；Agent 从 Symbolic → Reactive → Cognitive → LLM-based 的演进；MCP/A2A 起源 |
+| 3 Agent 原理 | 认知架构（perception/memory/planning/action）；范式（ReAct/Reflexion/Plan-and-Execute/AutoGPT）；混合系统（rules + retriever + 小模型 + 中心 LLM） |
+| 4 Harness 工程 | **MCP 客户端/服务端**、Streamable HTTP、A2A、上下文工程、记忆、hooks、permissions、sandbox；参照 Claude Code / Pi / Codex 的 harness 设计 |
+| 5 Agent 功能实现 | tool calling、RAG、记忆、规划、多 Agent 协作、code execution；**MCP server 实现**、A2A 集成、x402 集成；**复现 Claude Code / Pi / Codex 的核心特性** |
+| 6 工业落地 | 部署、**LLM-native 可观测性（Langfuse/Helicone/Arize Phoenix/OpenLLMetry）**、evaluation（LLM-as-judge、生产环境评测）、security/红队、**模型路由器（Martian/Not Diamond）**、cost control、speculative decoding、EU AI Act 合规、AIUC-1、真实案例 |
 
 ## 二、语言与术语
 
