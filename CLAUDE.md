@@ -39,6 +39,21 @@
 | 5 Agent 功能实现 | tool calling、RAG、记忆、规划、多 Agent 协作、code execution；**MCP server 实现**、A2A 集成、x402 集成；**复现 Claude Code / Pi / Codex 的核心特性** |
 | 6 工业落地 | 部署、**LLM-native 可观测性（Langfuse/Helicone/Arize Phoenix/OpenLLMetry）**、evaluation（LLM-as-judge、生产环境评测）、security/红队、**模型路由器（Martian/Not Diamond）**、cost control、speculative decoding、EU AI Act 合规、AIUC-1、真实案例 |
 
+### 写作原则：以主流产品为素材，提炼通用要素
+
+**Agent 相关 Part（3-6）的写作方法**：
+
+1. **素材来源**：以 2026 主流产品（Claude Code、Pi、Codex CLI、Antigravity、Goose、Aider、OpenHands、Sourcegraph Amp 等）为观察对象
+2. **提取模式**：从这些产品中识别**反复出现的设计决策**——不是某个产品独有的特性
+3. **抽象要素**：把模式抽象成框架无关、模型无关、产品无关的通用概念
+4. **避免的写法**：
+   - 不写"Claude Code 怎么用" / "Pi 的 API 长啥样" 这种产品教程
+   - 不引用某个产品的私有命名（如 Claude Code 的 Skill、Pi 的 Lazy Skills 这种产品术语）
+   - 不假设读者只用某一个工具
+5. **追求的目标**：读完 Part 3-6 后，读者能**独立设计一个 Agent harness / 实现一个 Agent / 评估一个生产 Agent**，而不依赖任何一个特定产品
+
+**判别标准**：一个章节的内容，去掉后换一个产品来描述仍然成立 → 这是通用要素；换一个产品就不成立 → 这是产品特性（应剔除）。
+
 ## 二、语言与术语
 
 - **正文语言：** 中文（简体）
