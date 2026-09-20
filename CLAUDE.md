@@ -20,6 +20,17 @@
 
 每个 Part 独立走 `brainstorm → spec → plan → 写作` 流程。
 
+### 各 Part 必须覆盖的子主题（参考 2025 主流 Agent 书目录）
+
+| Part | 必须覆盖 |
+|---|---|
+| 1 大模型基础 | AI/ML/DL、Transformer、预训练、SFT、RLHF、对齐 |
+| 2 LLM 与 Agent 演进 | LLM 家族史（BERT/GPT/T5/LLaMA/Qwen/DeepSeek…）；Agent 从 Symbolic → Reactive → Cognitive → LLM-based 的演进 |
+| 3 Agent 原理 | 认知架构（perception/memory/planning/action）；范式（ReAct/Reflexion/Plan-and-Execute/AutoGPT） |
+| 4 Harness 工程 | 工具/MCP（Model Context Protocol）、sandbox、上下文工程、记忆、hooks、permissions |
+| 5 Agent 功能实现 | tool calling、RAG、记忆、规划、多 Agent 协作、code execution、MCP 集成 |
+| 6 工业落地 | 部署、可观测性、evaluation（LLM-as-judge、benchmark）、security/红队、cost control、真实案例 |
+
 ## 二、语言与术语
 
 - **正文语言：** 中文（简体）
