@@ -87,7 +87,7 @@ AI 70 年的历史里，研究者们对"智能到底怎么实现"形成了三种
 
 **算法（Algorithm）** 的突破解决了训练深网络的几个老大难：
 - 2010 年 ReLU 激活函数替代 Sigmoid，缓解梯度消失；
-- 2012 年 Dropout 缓解过拟合；
+- 2012 年 AlexNet 在 ImageNet 一战成名，把图像分类错误率从 26% 降到 15%（其中已使用 Dropout 缓解过拟合，但 Dropout 本身作为正式技术由 Hinton 组在 JMLR 2014 发表）；
 - 2014 年 Adam 优化器让收敛更快更稳；
 - 2015 年 ResNet 残差连接让网络从几十层跃升到上百层；
 - 2017 年 Transformer 架构提出，彻底改变了序列建模。
@@ -155,7 +155,7 @@ LLM（Large Language Model，大语言模型）是这本书要讲的核心对象
 
 ### 必读论文
 - [Deep Learning (LeCun, Bengio, Hinton, 2015)](https://www.nature.com/articles/nature14539) — Nature 综述，三位深度学习奠基人回顾领域全貌。
-- [ImageNet Classification with Deep CNN (Krizhevsky et al., 2012)](https://www.cs.toronto.edu/~kriz/cifar.html) — AlexNet 论文，深度学习崛起的标志性工作。
+- [ImageNet Classification with Deep CNN (Krizhevsky et al., 2012)](https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf) — AlexNet 论文，深度学习崛起的标志性工作。
 
 ### 推荐博客 / 教程
 - [The Illustrated Transformer (Jay Alammar)](https://jalammar.github.io/illustrated-transformer/) — 图解 Transformer 最好的入门读物之一，Ch3 也会用到。
