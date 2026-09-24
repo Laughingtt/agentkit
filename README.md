@@ -24,4 +24,4 @@
 ## 当前进度
 
 - ✅ Part 1 spec 与 plan
-- 🚧 Part 1 章节写作
+- ✅ Part 1 章节写作与终审
