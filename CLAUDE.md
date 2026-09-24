@@ -93,6 +93,8 @@
 - **mermaid `graph TD/LR`** —— 架构、流程、数据走向
 - **mermaid `sequenceDiagram`** —— 多角色协作（标注员、RM、策略模型、价值模型）
 - **mermaid `mindmap`** —— 概念分类与从属（如三种 tokenizer、训练三大范式）
+- **mermaid `timeline`** —— 编年史、版本演进（如 LLM 家族时间线、协议发展史）
+- **mermaid `stateDiagram-v2`** —— 状态机（如 A2A Task 生命周期、Agent 会话状态）
 - **ASCII 框图** —— 数据流、张量形状变换、小型示意
 - **对比表** —— 三种以上方案的差异（不堆 mermaid）
 
@@ -140,7 +142,7 @@
 ## 六、图表与 Mermaid
 
 - Mermaid 直接内嵌在 markdown，GitHub 自动渲染
-- 仅允许四种图类型：`graph` / `flowchart` / `sequenceDiagram` / `mindmap`
+- 仅允许六种图类型：`graph` / `flowchart` / `sequenceDiagram` / `mindmap` / `timeline` / `stateDiagram-v2`
 - 复杂关系用**表格**，不用 mermaid
 - 节点文字简短（≤ 4 个字 / 词）
 
