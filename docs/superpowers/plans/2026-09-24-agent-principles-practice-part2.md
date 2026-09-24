@@ -527,8 +527,8 @@ graph TD
 - [ ] **Step 11：写本章参考**
 
 - 必读论文 / 经典：
-  - [Intelligent Agents: Theory and Practice (Wooldridge & Jennings, 1995)](https://dl.acm.org/doi/10.1145/204889.204891)
-  - [Intelligence Without Representation (Brooks, 1991)](https://doi.org/10.1016/0004-3702(91)90054-P)
+  - [Intelligent Agents: Theory and Practice (Wooldridge & Jennings, 1995)](https://doi.org/10.1017/S0269888900008122)（2026-09-24 Task 3 核实更正：原候选 10.1145/204889.204891 无效）
+  - [Intelligence Without Representation (Brooks, 1991)](https://doi.org/10.1016/0004-3702(91)90053-M)（2026-09-24 Task 3 核实更正：原候选 …90054-P 无效）
   - [ReAct: Synergizing Reasoning and Acting in Language Models (Yao et al., 2022)](https://arxiv.org/abs/2210.03629)
   - [Reflexion: Language Agents with Verbal Reinforcement Learning (2023)](https://arxiv.org/abs/2303.11366)
 - 推荐博客 / 教程：
