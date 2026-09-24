@@ -40,7 +40,7 @@ def react(question: str, max_steps: int = 5) -> str:
     for _ in range(max_steps):
         decision = llm_decide(observations)
         print(decision)
-        # decision 以 Thought 行开头，是否收尾要看最后一行（修复：原 startswith 判整段永远为假）
+        # 判断最后一行是否已是最终答案
         last_line = decision.splitlines()[-1]
         if last_line.startswith("Final Answer"):
             return last_line.replace("Final Answer: ", "")
