@@ -38,7 +38,7 @@ graph LR
 - **诚实性（honest）**：知道自己不知道什么，不编造；
 - **无害性（harmless）**：不输出危险、违法、歧视性的内容。
 
-三层合起来常被缩写为 **HHH**——Anthropic 在 Constitutional AI（详见 5.6）里最早提出。
+三层合起来常被缩写为 **HHH**（helpful / honest / harmless），Anthropic 早期对齐研究即以此为纲（Constitutional AI 见 5.6）。
 
 **关键认识：能力 ≠ 对齐**。两件事必须分开看：
 
@@ -211,7 +211,7 @@ graph LR
     D --> E[CAI 对齐模型]
 ```
 
-**两个突出优点**：大大减少人类标注量；原则可解释、可审计。Anthropic 在 [Claude 新宪法（2026.01 发布，84 页、约 2.3 万词）](https://www.anthropic.com/news/claude-new-constitution/) 加入对 agent 场景的"可逆性、最小特权、审计轨迹"等新原则——CAI 正从"对话对齐"扩展到"行动对齐"。
+**两个突出优点**：大幅减少人类标注；原则可解释、可审计。Anthropic 在 [Claude 新宪法（2026.01 发布）](https://www.anthropic.com/news/claude-new-constitution/) 中也纳入了对智能体行动场景的约束条款——CAI 正从"对话对齐"扩展到"行动对齐"。
 
 ### 其他六种
 
@@ -275,7 +275,7 @@ graph LR
 | 适用场景 | 闲聊、简单问答 | 数学、代码、复杂规划 |
 | 训练范式 | SFT + RLHF/DPO | SFT + GRPO + PRM |
 
-[OpenAI o1](https://openai.com/index/learning-to-reason-with-llms/) 在 AIME 数学上拿到 74/100（GPT-4o 约 12%）——比 GPT-4o 高 60+ 个百分点——但**单次回答贵 10 倍**。**LLM 范式转折**：从"堆训练算力"到"堆推理算力"。
+[OpenAI o1](https://openai.com/index/learning-to-reason-with-llms/) 在 AIME 数学上拿到约 **74%**（GPT-4o 约 **12%**），但**推理更慢、也更贵**。**LLM 范式转折**：从"堆训练算力"到"堆推理算力"。
 
 **简单记法：** CoT 让模型"先想后答"，GRPO 让它可训练，PRM 让它更精准。
 
@@ -332,7 +332,7 @@ graph LR
 
 ## Part 2 衔接
 
-Part 1 讲"**原理**"，Part 2 讲"**家族演进**"——过去 7 年里主流 LLM 各自走了什么变体、有什么设计选择。Part 2 会带你走 GPT / LLaMA / DeepSeek / Qwen / Claude / Gemini 等系列，展开 Ch3.10 提到的 MoE / RMSNorm / SwiGLU / GQA 等现代组件，以及 Ch5.6 提到的各种对齐方法的具体演进。准备好了吗？我们出发。
+Part 1 讲"**原理**"，Part 2 讲"**家族演进**"——过去 7 年里主流 LLM 各自走了什么变体、有什么设计选择。Part 2 会带你走 GPT / LLaMA / DeepSeek / Qwen / Claude / Gemini 等系列，展开 Ch3 的 3.10 节提到的 MoE / RMSNorm / SwiGLU / GQA 等现代组件，以及 5.6 节提到的各种对齐方法的演进。准备好了吗？我们出发。
 
 ## 本章参考
 
@@ -349,4 +349,4 @@ Part 1 讲"**原理**"，Part 2 讲"**家族演进**"——过去 7 年里主流
 
 ### 视频 / 课程
 
-- [Andrej Karpathy "Let's reproduce GPT-2"](https://www.youtube.com/watch?v=lnA9DMSEyqs) — 从零复现 GPT-2 的 4 小时长视频，覆盖预训练 + instruction tuning 的端到端流程，看完会对"训练一个 LLM"有第一性认识。
+- [Andrej Karpathy "Let's reproduce GPT-2 (124M)"](https://www.youtube.com/watch?v=l8pRSuU81PU) — 从零复现 GPT-2 的 4 小时长视频，覆盖预训练 + instruction tuning 的端到端流程，看完会对"训练一个 LLM"有第一性认识。

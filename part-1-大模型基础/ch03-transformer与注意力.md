@@ -159,13 +159,13 @@ Self-attention 有一个隐藏的、但极其致命的弱点：**它对序列顺
 其他两种一句话点名：
 
 - **Sinusoidal**：原始 Transformer 方案，用不同频率的 sin/cos 生成位置向量。已被淘汰。
-- **ALiBi**：保持 attention 不变，在打分上加一个与距离成正比的负偏置。MPT、Falcon、BLOOM 采用。
+- **ALiBi**：保持 attention 不变，在打分上加一个与距离成正比的负偏置。MPT、BLOOM 采用。
 
 | 方案 | 编码对象 | 是否需参数 | 代表模型 | 现状 |
 |---|---|---|---|---|
 | Sinusoidal | 绝对位置 | 否 | 原始 Transformer | 已淘汰 |
 | **RoPE** | **相对位置** | **否** | **LLaMA / Qwen / DeepSeek** | **当前主流** |
-| ALiBi | 距离偏置 | 否 | MPT / Falcon / BLOOM | 长上下文场景 |
+| ALiBi | 距离偏置 | 否 | MPT / BLOOM | 长上下文场景 |
 
 **记法：RoPE 主流，ALiBi 长上下文，Sinusoidal 已淘汰。**
 
@@ -228,11 +228,11 @@ LLM 推理是**自回归**的——生成第 $t$ 个 token 时，要重新过一
 生成 token L: O(L²) 总计算        生成 token L: O(L) 总计算
 ```
 
-**算一笔显存账。** KV cache 把 $O(L^2)$ 总计算量降到 $O(L)$，但显存占用增加——每层、所有历史 token 的 K/V 都要存。32 层、40k 上下文、每层 8 KV head、head dim 128 的模型，KV cache 显存约 2.5 GB。3.10 节的 **GQA** 就是为这个问题设计的——多 query head 共享一组 K/V，把 KV cache 直接砍掉几倍。
+**算一笔显存账。** KV cache 把 $O(L^2)$ 总计算量降到 $O(L)$，但显存占用增加——每层、所有历史 token 的 K/V 都要存。32 层、40k 上下文、每层 8 KV head、head dim 128 的模型，KV cache 显存（fp16）约 5.2 GB。3.10 节的 **GQA** 就是为这个问题设计的——多 query head 共享一组 K/V，把 KV cache 直接砍掉几倍。
 
 ## 3.9 一个最小 attention 示例
 
-用最小 PyTorch 代码把 3.3 节公式跑一遍。完整代码在 `code/part-1/attention.py`，核心函数只有 4 行：
+用最小 PyTorch 代码把 3.3 节公式跑一遍。完整代码在 `code/part-1/attention.py`，核心函数只有 5 行：
 
 ```python
 def scaled_dot_product_attention(query, key, value):
@@ -266,7 +266,7 @@ OK：注意力权重行和为 1，输出形状正确
 
 ## 3.10 MoE 与现代 Transformer 变体
 
-标准 Transformer 块已 8 年，这期间涌现出一系列"小改动、大收益"的变体。LLaMA-3、Qwen-3、DeepSeek-V3、Mixtral 等前沿模型都同时具备下面这些特性。
+标准 Transformer 块已近十年，这期间涌现出一系列"小改动、大收益"的变体。LLaMA-3、Qwen-3、DeepSeek-V3、Mixtral 等前沿模型都同时具备下面这些特性。
 
 ### MoE（Mixture of Experts）— 深入讲
 
