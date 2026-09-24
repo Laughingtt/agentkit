@@ -11,6 +11,9 @@
 
 ```bash
 pip install torch transformers numpy
+
+# 若 huggingface.co 不可达，运行示例前设置镜像：
+# export HF_ENDPOINT=https://hf-mirror.com
 ```
 
 | 文件 | 对应章节 | 是否可运行 | 说明 |
