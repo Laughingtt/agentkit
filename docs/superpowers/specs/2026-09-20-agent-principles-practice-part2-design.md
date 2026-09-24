@@ -13,7 +13,7 @@
 
 | Part | 主题 |
 |---|---|
-| 1 | 大模型基础（已完成 spec） |
+| 1 | 大模型基础（正文已完成） |
 | 2 | 大模型与 Agent 的演进 ← **本 spec** |
 | 3 | Agent 原理 |
 | 4 | Harness 工程 |
@@ -24,7 +24,7 @@
 
 ### Part 2 的定位
 
-Part 1 解决了"LLM 是什么、怎么训练出来"的问题。Part 2 要回答两个新问题：
+Part 1 解决了"LLM 是什么、怎么训练出来"的问题。Part 2 要回答三个新问题：
 
 1. **LLM 这一路是怎么走到 2026 的？** —— 家族史：BERT → GPT → LLaMA → Qwen / DeepSeek / Claude / Gemini → 推理模型 → 混合架构
 2. **Agent 这一路又是怎么走过来的？** —— 50 年演进：Symbolic → Reactive → Cognitive → Hybrid → LLM-based
@@ -188,7 +188,7 @@ agentkit/
 ## 5. 写作约定（简版，详见 CLAUDE.md）
 
 - 每章模板：标题 → 一句话简介 → 本章目标（3-5 条 bullet）→ 本章导览（mermaid 总览图）→ 子节 → 本章小结 → 本章参考
-- Mermaid 仅用四种图：`graph` / `flowchart` / `sequenceDiagram` / `mindmap` / `timeline`（新增）
+- Mermaid 仅用六种图（CLAUDE.md 第六节，commit af79ce4）：`graph` / `flowchart` / `sequenceDiagram` / `mindmap` / `timeline` / `stateDiagram-v2`
 - 复杂关系用表格，不堆 mermaid
 - 引用：随文 markdown 链接 + 章末 "本章参考"（分必读论文 / 推荐博客 / 视频课程 三类）
 - 代码：仅 Ch10 一个示例；中文注释；文件头加 `# runnable: yes`
