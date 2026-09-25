@@ -159,7 +159,7 @@ LLM 没有淘汰前四代，它只是第一次提供了能把这四味药装进�
 
 ## 本章参考
 
-### 必读论文 / 经典
+### 必读论文
 - [Intelligent Agents: Theory and Practice (Wooldridge & Jennings, 1995)](https://doi.org/10.1017/S0269888900008122)
 - [Intelligence Without Representation (Brooks, 1991)](https://doi.org/10.1016/0004-3702(91)90053-M)
 - [A Robust Layered Control System for a Mobile Robot (Brooks, 1986)](https://doi.org/10.1109/jra.1986.1087032)
