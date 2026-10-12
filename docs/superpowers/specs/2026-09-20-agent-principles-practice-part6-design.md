@@ -46,37 +46,37 @@
 agentkit/
 ├── part-6-工业落地/
 │   ├── README.md               # Part 6 目录与简介
-│   ├── ch28-llm-native可观测性.md
-│   ├── ch29-evaluation.md
-│   ├── ch30-security与红队.md
-│   ├── ch31-模型路由器与成本控制.md
-│   ├── ch32-合规与标准.md
-│   └── ch33-真实案例与小结.md
+│   ├── ch29-llm-native可观测性.md
+│   ├── ch30-evaluation.md
+│   ├── ch31-security与红队.md
+│   ├── ch32-模型路由器与成本控制.md
+│   ├── ch33-合规与标准.md
+│   └── ch34-真实案例与小结.md
 └── code/
     └── part-6/
         ├── README.md           # 依赖说明（Langfuse ≥ 3.x, OpenTelemetry SDK）
-        ├── langfuse_trace.py   # Ch28 示例：单次 LLM 调用的 trace
-        ├── eval_pipeline.py    # Ch29 示例：LLM-as-judge 评测
-        ├── router_demo.py      # Ch31 示例：基于规则的 router
-        └── redteam_basic.py    # Ch30 示例：Promptfoo 接入
+        ├── langfuse_trace.py   # Ch29 示例：单次 LLM 调用的 trace
+        ├── eval_pipeline.py    # Ch30 示例：LLM-as-judge 评测
+        ├── router_demo.py      # Ch32 示例：基于规则的 router
+        └── redteam_basic.py    # Ch31 示例：Promptfoo 接入
 ```
 
 ---
 
 ## 4. Part 6 六章内容大纲
 
-### Ch28 LLM-native 可观测性（~4-5k 字）
+### Ch29 LLM-native 可观测性（~4-5k 字）
 
 读完应能在 Agent 上接入 tracing 并回答"这次请求为什么慢、为什么贵"。
 
-- 28.1 可观测性是什么：日志 / 指标 / 追踪（Logs / Metrics / Traces）
-- 28.2 为什么 LLM 应用需要"专门"的可观测性：非确定性 + 多步嵌套 + 成本可见性
-- 28.3 OpenTelemetry 与 GenAI 语义约定（`gen_ai.*` attributes）
-- 28.4 四大主流平台速览（Langfuse / Helicone / Arize Phoenix / OpenLLMetry）
-- 28.5 一次 LLM 调用的 trace 长什么样：root span → generation → tool span
-- 28.6 用 Langfuse 接入一个最简单的 trace（代码示例）
-- 28.7 自托管 vs SaaS：合规、成本、规模的取舍
-- 28.8 从 trace 到 dashboard：成本归因、延迟分位、错误率
+- 29.1 可观测性是什么：日志 / 指标 / 追踪（Logs / Metrics / Traces）
+- 29.2 为什么 LLM 应用需要"专门"的可观测性：非确定性 + 多步嵌套 + 成本可见性
+- 29.3 OpenTelemetry 与 GenAI 语义约定（`gen_ai.*` attributes）
+- 29.4 四大主流平台速览（Langfuse / Helicone / Arize Phoenix / OpenLLMetry）
+- 29.5 一次 LLM 调用的 trace 长什么样：root span → generation → tool span
+- 29.6 用 Langfuse 接入一个最简单的 trace（代码示例）
+- 29.7 自托管 vs SaaS：合规、成本、规模的取舍
+- 29.8 从 trace 到 dashboard：成本归因、延迟分位、错误率
 
 **Anchor 示例：**
 - Mermaid `sequenceDiagram`：一次 Agent 请求的完整 span 嵌套
@@ -85,18 +85,18 @@ agentkit/
 
 ---
 
-### Ch29 Evaluation：让 Agent 的好坏可被衡量（~4-5k 字）
+### Ch30 Evaluation：让 Agent 的好坏可被衡量（~4-5k 字）
 
 读完应能搭建一条 LLM-as-judge 评测流水线，并在生产环境里持续监控质量。
 
-- 29.1 为什么不能只看"用户没投诉"：质量信号的滞后性
-- 29.2 三种评测范式：pointwise / pairwise / reference-based
-- 29.3 LLM-as-judge 的直觉：用 LLM 当裁判
-- 29.4 四大偏置与对策：position / verbosity / self-preference / agreeableness
-- 29.5 主流指标体系：RAGAS（faithfulness / answer relevance / context precision）与 DeepEval
-- 29.6 一个最小 LLM-as-judge 评测流水线（代码示例）
-- 29.7 离线评测 vs 在线评测：guardrail、A/B、shadow traffic
-- 29.8 评测的版本化：rubric 升级 = 评分体系迁移
+- 30.1 为什么不能只看"用户没投诉"：质量信号的滞后性
+- 30.2 三种评测范式：pointwise / pairwise / reference-based
+- 30.3 LLM-as-judge 的直觉：用 LLM 当裁判
+- 30.4 四大偏置与对策：position / verbosity / self-preference / agreeableness
+- 30.5 主流指标体系：RAGAS（faithfulness / answer relevance / context precision）与 DeepEval
+- 30.6 一个最小 LLM-as-judge 评测流水线（代码示例）
+- 30.7 离线评测 vs 在线评测：guardrail、A/B、shadow traffic
+- 30.8 评测的版本化：rubric 升级 = 评分体系迁移
 
 **Anchor 示例：**
 - Mermaid `flowchart`：评测流水线（dataset → candidate → judge → score → dashboard）
@@ -105,18 +105,18 @@ agentkit/
 
 ---
 
-### Ch30 Security 与红队（~4-5k 字）
+### Ch31 Security 与红队（~4-5k 字）
 
 读完应能在 Agent 上线前做过一轮结构化红队测试，知道常见攻击类别与防御手段。
 
-- 30.1 为什么 Agent 的攻击面更大：tool calling + 长上下文 + 多步推理
-- 30.2 OWASP LLM Top 10 与常见攻击类别：prompt injection / jailbreak / data leakage / over-agency
-- 30.3 直接注入 vs 间接注入（从文档/网页注入）
-- 30.4 红队工具速览：Promptfoo / PyRIT / Garak 三大框架的取舍
-- 30.5 自动化红队的最小可执行流程（代码示例：Promptfoo CLI）
-- 30.6 防御层：输入清洗 / 输出过滤 / 工具白名单 / 权限沙箱
-- 30.7 持续红队：CI/CD 接入与回归基线
-- 30.8 红队不是一次性的：组织、节奏、与产品迭代的耦合
+- 31.1 为什么 Agent 的攻击面更大：tool calling + 长上下文 + 多步推理
+- 31.2 OWASP LLM Top 10 与常见攻击类别：prompt injection / jailbreak / data leakage / over-agency
+- 31.3 直接注入 vs 间接注入（从文档/网页注入）
+- 31.4 红队工具速览：Promptfoo / PyRIT / Garak 三大框架的取舍
+- 31.5 自动化红队的最小可执行流程（代码示例：Promptfoo CLI）
+- 31.6 防御层：输入清洗 / 输出过滤 / 工具白名单 / 权限沙箱
+- 31.7 持续红队：CI/CD 接入与回归基线
+- 31.8 红队不是一次性的：组织、节奏、与产品迭代的耦合
 
 **Anchor 示例：**
 - Mermaid `sequenceDiagram`：间接 prompt injection 攻击链
@@ -125,18 +125,18 @@ agentkit/
 
 ---
 
-### Ch31 模型路由器与成本控制（~4-5k 字）
+### Ch32 模型路由器与成本控制（~4-5k 字）
 
 读完应能解释 router 的工作原理，并能在自己的系统里做一版"基于规则的轻量路由"。
 
-- 31.1 为什么需要 router：一个 prompt 不应该都打到最贵的模型
-- 31.2 router 的三类策略：规则 / 嵌入相似度 / 元模型（meta-model）
-- 31.3 主流 router 速览：Not Diamond / Martian / OpenRouter / 厂商自带 fallback
-- 31.4 一个最小 router 设计：难度分级 + 路由表
-- 31.5 成本优化的四层缓存：exact / semantic / prompt cache / KV cache
-- 31.6 Speculative decoding：直觉、原理、与典型加速比
-- 31.7 Continuous batching 与 chunked prefill
-- 31.8 一个最小 router 代码示例
+- 32.1 为什么需要 router：一个 prompt 不应该都打到最贵的模型
+- 32.2 router 的三类策略：规则 / 嵌入相似度 / 元模型（meta-model）
+- 32.3 主流 router 速览：Not Diamond / Martian / OpenRouter / 厂商自带 fallback
+- 32.4 一个最小 router 设计：难度分级 + 路由表
+- 32.5 成本优化的四层缓存：exact / semantic / prompt cache / KV cache
+- 32.6 Speculative decoding：直觉、原理、与典型加速比
+- 32.7 Continuous batching 与 chunked prefill
+- 32.8 一个最小 router 代码示例
 
 **Anchor 示例：**
 - Mermaid `flowchart`：router 决策流（query → classify → route → model A/B/C）
@@ -146,18 +146,18 @@ agentkit/
 
 ---
 
-### Ch32 合规与标准（~4-5k 字）
+### Ch33 合规与标准（~4-5k 字）
 
 读完应能描述 EU AI Act 与 AIUC-1 的核心条款，知道"合规"对工程团队的实质要求。
 
-- 32.1 为什么 Agent 的合规比传统软件复杂：决策不可解释 + 责任主体模糊
-- 32.2 EU AI Act 风险分级：unacceptable / high / limited / minimal
-- 32.3 GPAI 模型条款：技术文档、训练数据摘要、版权合规
-- 32.4 系统性风险阈值（10^25 FLOPs）与额外义务
-- 32.5 AIUC-1：第一个专门为 Agent 设计的合规标准
-- 32.6 AIUC-1 vs SOC 2 / ISO 42001 / EU AI Act：互补而非替代
-- 32.7 一份工程师能用的合规 Checklist（按角色）
-- 32.8 合规驱动的工程实践：可追溯日志、prompt 版本化、决策留痕
+- 33.1 为什么 Agent 的合规比传统软件复杂：决策不可解释 + 责任主体模糊
+- 33.2 EU AI Act 风险分级：unacceptable / high / limited / minimal
+- 33.3 GPAI 模型条款：技术文档、训练数据摘要、版权合规
+- 33.4 系统性风险阈值（10^25 FLOPs）与额外义务
+- 33.5 AIUC-1：第一个专门为 Agent 设计的合规标准
+- 33.6 AIUC-1 vs SOC 2 / ISO 42001 / EU AI Act：互补而非替代
+- 33.7 一份工程师能用的合规 Checklist（按角色）
+- 33.8 合规驱动的工程实践：可追溯日志、prompt 版本化、决策留痕
 
 **Anchor 示例：**
 - Mermaid `flowchart`：EU AI Act 风险分级决策树
@@ -166,17 +166,17 @@ agentkit/
 
 ---
 
-### Ch33 真实案例与小结（~4-5k 字）
+### Ch34 真实案例与小结（~4-5k 字）
 
 读完应能讲清楚"别人是怎么踩坑的"，并把 Part 6 的全部要点串成一张行动清单。
 
-- 33.1 案例一：客服 Agent（Klarna：从 700 FTE 到 hybrid 模式的回滚教训）
-- 33.2 案例二：代码 Agent（参考 Claude Code / Codex CLI 的 telemetry 实践）
-- 33.3 案例三：RAG Agent（一家中型企业的 RAG 召回率优化 + 可观测性接入）
-- 33.4 三个案例的共性：可观测先行、灰度发布、保留人类兜底
-- 33.5 Part 6 小结 + 全书小结
-- 33.6 上线一份 Agent 的 30 天清单
-- 33.7 未来 12-24 个月值得关注的方向
+- 34.1 案例一：客服 Agent（Klarna：从 700 FTE 到 hybrid 模式的回滚教训）
+- 34.2 案例二：代码 Agent（参考 Claude Code / Codex CLI 的 telemetry 实践）
+- 34.3 案例三：RAG Agent（一家中型企业的 RAG 召回率优化 + 可观测性接入）
+- 34.4 三个案例的共性：可观测先行、灰度发布、保留人类兜底
+- 34.5 Part 6 小结 + 全书小结
+- 34.6 上线一份 Agent 的 30 天清单
+- 34.7 未来 12-24 个月值得关注的方向
 
 **Anchor 示例：**
 - 表格：三个案例的指标对比（处理量 / 节省 / 翻车点）
@@ -188,12 +188,12 @@ agentkit/
 ## 5. 写作约定（简版，详见 CLAUDE.md）
 
 - 每章模板：标题 → 一句话简介 → 本章目标（3-5 条 bullet）→ 本章导览（mermaid 总览图）→ 子节 → 本章小结 → 本章参考
-- Mermaid 仅用四种图：`graph` / `flowchart` / `sequenceDiagram` / `mindmap`
+- Mermaid 用六种图（CLAUDE.md 第六节）：`graph` / `flowchart` / `sequenceDiagram` / `mindmap` / `timeline` / `stateDiagram-v2`
 - 复杂对比一律用表格，不堆 mermaid
 - 引用：随文 markdown 链接 + 章末 "本章参考"（分必读论文 / 推荐博客 / 视频课程 三类）
 - 代码：中文注释；可运行示例文件头加 `# runnable: yes`
 - 跨章引用 `参见 X.3`；跨 Part `(见 Part N ChM)`，**不**复制内容
-- **本 Part 特别强调：** 每章至少 1 个 mermaid + 1 个对比表；Ch28、Ch29、Ch31 的代码示例必须可运行
+- **本 Part 特别强调：** 每章至少 1 个 mermaid + 1 个对比表；Ch29、Ch30、Ch32 的代码示例必须可运行
 
 ---
 
@@ -206,12 +206,12 @@ agentkit/
 - 含至少 1 个 mermaid + 1 个对比表
 - 字数在 ±20% 区间内（每章 4-5k）
 - 关键概念全覆盖（每章 5-8 个）
-- Ch28 / Ch29 / Ch31 至少 1 个可运行代码示例（`# runnable: yes`）
-- Ch30 至少 1 个 Promptfoo/Garak/PyRIT 的接入示意
+- Ch29 / Ch30 / Ch32 至少 1 个可运行代码示例（`# runnable: yes`）
+- Ch31 至少 1 个 Promptfoo/Garak/PyRIT 的接入示意
 
 ### Part 6 整体验收
 
-- 6 章全部写完（Ch28-Ch33）
+- 6 章全部写完（Ch29-Ch34）
 - 总字数 25-30k
 - `part-6-工业落地/README.md` 含目录与一句话简介
 - `README.md` 出现 Part 6，标记为 "已发布"
@@ -284,7 +284,7 @@ agentkit/
 **决策：**
 - **EU AI Act** —— 详讲（CLAUDE.md 强制要求）
 - **AIUC-1** —— 详讲（CLAUDE.md 强制要求）
-- **SOC 2 / ISO 42001 / ISO 27001 / GDPR** —— 在对比表中点名 + Part 6 Ch32 末尾给一行参考链接
+- **SOC 2 / ISO 42001 / ISO 27001 / GDPR** —— 在对比表中点名 + Part 6 Ch33 末尾给一行参考链接
 - 不深入展开的理由：CLAUDE.md 已规定本书聚焦"Agent 特异性"问题，传统合规标准应让位给专业资料
 
 ---
@@ -292,25 +292,25 @@ agentkit/
 ## 9. 写作流程与依赖
 
 1. 本 spec 经用户审阅通过后，进入 `superpowers:writing-plans` 流程
-2. writing-plans 输出 Part 6 的实现 plan（按 Ch28 → Ch33 顺序）
+2. writing-plans 输出 Part 6 的实现 plan（按 Ch29 → Ch34 顺序）
 3. 实际写作时严格遵循 CLAUDE.md 一·甲 的初学者可懂性原则
 4. 写后审查在 Task 6 整合与终审中统一执行（URL WebFetch 抽样 + 代码运行 + 字数 + 一致性）
 
 ### Part 6 内部依赖顺序
 
 ```
-Ch28 可观测性 ─→ Ch29 Evaluation ─→ Ch30 Security ─→ Ch31 Router/Cost ─→ Ch32 合规 ─→ Ch33 案例
+Ch29 可观测性 ─→ Ch30 Evaluation ─→ Ch31 Security ─→ Ch32 Router/Cost ─→ Ch33 合规 ─→ Ch34 案例
        │              │                  │                  │                 │           │
        └──────────────┴──────────────────┴──────────────────┴─────────────────┴───────────┘
                                             ↓
                                     全书小结 + 30 天清单
 ```
 
-- Ch28 是"地基"（没有 trace 就没有 eval / 就没有红队基线 / 就没有 cost 归因）
-- Ch29 依赖 Ch28（评测数据通常落在 Langfuse/Phoenix）
-- Ch30 与 Ch31 可并行（但代码示例建议 Ch30 先做——依赖最小）
-- Ch32 是"横切"——与每章都有关联，但放在靠后章节用"汇总视角"讲
-- Ch33 收尾：把前 5 章的通用要素在三个真实案例中复现一次
+- Ch29 是"地基"（没有 trace 就没有 eval / 就没有红队基线 / 就没有 cost 归因）
+- Ch30 依赖 Ch29（评测数据通常落在 Langfuse/Phoenix）
+- Ch31 与 Ch32 可并行（但代码示例建议 Ch31 先做——依赖最小）
+- Ch33 是"横切"——与每章都有关联，但放在靠后章节用"汇总视角"讲
+- Ch34 收尾：把前 5 章的通用要素在三个真实案例中复现一次
 
 ---
 
@@ -360,12 +360,12 @@ Ch28 可观测性 ─→ Ch29 Evaluation ─→ Ch30 Security ─→ Ch31 Router
 
 | 章节 | 章节名 | 字数估算 | 重点难度 |
 |---|---|---|---|
-| Ch28 | LLM-native 可观测性 | 4.5k | 中（OTel 概念首次出现） |
-| Ch29 | Evaluation | 4.5k | 中（LLM-as-judge 偏置部分需细致） |
-| Ch30 | Security 与红队 | 4.5k | 中高（OWASP 10 条需简练） |
-| Ch31 | 模型路由器与成本控制 | 4.5k | 中（router + speculative decoding 概念多） |
-| Ch32 | 合规与标准 | 4.0k | 中（条款多但应避免变成法条翻译） |
-| Ch33 | 真实案例与小结 | 4.5k | 低（综合回顾） |
+| Ch29 | LLM-native 可观测性 | 4.5k | 中（OTel 概念首次出现） |
+| Ch30 | Evaluation | 4.5k | 中（LLM-as-judge 偏置部分需细致） |
+| Ch31 | Security 与红队 | 4.5k | 中高（OWASP 10 条需简练） |
+| Ch32 | 模型路由器与成本控制 | 4.5k | 中（router + speculative decoding 概念多） |
+| Ch33 | 合规与标准 | 4.0k | 中（条款多但应避免变成法条翻译） |
+| Ch34 | 真实案例与小结 | 4.5k | 低（综合回顾） |
 | **合计** | — | **~26.5k** | — |
 
 ### 时间估算

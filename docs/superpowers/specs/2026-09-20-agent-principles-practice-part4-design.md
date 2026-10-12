@@ -57,38 +57,38 @@
 agentkit/
 ├── part-4-harness工程/
 │   ├── README.md               # Part 4 目录与简介
-│   ├── ch16-harness导览.md
-│   ├── ch17-mcp协议.md
-│   ├── ch18-a2a协议.md
-│   ├── ch19-上下文工程与记忆.md
-│   ├── ch20-hooks-permissions-sandbox.md
-│   └── ch21-小结与衔接.md
+│   ├── ch17-harness导览.md
+│   ├── ch18-mcp协议.md
+│   ├── ch19-a2a协议.md
+│   ├── ch20-上下文工程与记忆.md
+│   ├── ch21-hooks-permissions-sandbox.md
+│   └── ch22-小结与衔接.md
 └── code/
     └── part-4/
         ├── README.md           # 依赖说明（mcp[cli]、a2a-sdk、httpx、PyYAML）
-        ├── mcp_server_min.py   # Ch17 最小 MCP server 示例
-        ├── mcp_client_min.py   # Ch17 最小 MCP client 示例
-        ├── a2a_server_min.py   # Ch18 最小 A2A server 示例
-        ├── a2a_client_min.py   # Ch18 最小 A2A client 示例
-        ├── hooks_register.py   # Ch20 通用 hooks 注册示例
-        ├── permission_policy.py # Ch20 权限策略示例
-        └── compaction_demo.py  # Ch19 上下文压缩示意
+        ├── mcp_server_min.py   # Ch18 最小 MCP server 示例
+        ├── mcp_client_min.py   # Ch18 最小 MCP client 示例
+        ├── a2a_server_min.py   # Ch19 最小 A2A server 示例
+        ├── a2a_client_min.py   # Ch19 最小 A2A client 示例
+        ├── hooks_register.py   # Ch21 通用 hooks 注册示例
+        ├── permission_policy.py # Ch21 权限策略示例
+        └── compaction_demo.py  # Ch20 上下文压缩示意
 ```
 
 ---
 
 ## 4. Part 4 六章内容大纲
 
-### Ch16 Harness 导览（~4-5k 字）
+### Ch17 Harness 导览（~4-5k 字）
 
 读完应能用一段话说清"为什么主流 Agent 产品都长这样"——即 Agent 核心循环 + harness 外壳的分工。
 
 **子节：**
 
-- 16.1 一个朴素的问题：裸 LLM 为什么不能当 Agent 用
-- 16.2 什么是 harness：套在 Agent 循环外面的"工程外壳"
-- 16.3 主流 coding agent CLI 的横切：Claude Code / Pi / Codex CLI 有什么共同点
-- 16.4 Harness 的七大职责（**本章锚点**）：
+- 17.1 一个朴素的问题：裸 LLM 为什么不能当 Agent 用
+- 17.2 什么是 harness：套在 Agent 循环外面的"工程外壳"
+- 17.3 主流 coding agent CLI 的横切：Claude Code / Pi / Codex CLI 有什么共同点
+- 17.4 Harness 的七大职责（**本章锚点**）：
   1. 工具与权限（tools & permissions）
   2. 执行隔离（isolation / sandbox）
   3. 上下文与记忆（context & memory）
@@ -96,9 +96,9 @@ agentkit/
   5. 生命周期事件（hooks）
   6. 会话与状态（session / state / recordings）
   7. 投递接口（delivery：TUI / CLI / RPC / SDK）
-- 16.5 一段话总结：Agent = LLM × harness
-- 16.6 全章导览（mermaid 总览图）
-- 16.7 Part 4 阅读路线
+- 17.5 一段话总结：Agent = LLM × harness
+- 17.6 全章导览（mermaid 总览图）
+- 17.7 Part 4 阅读路线
 
 **Anchor 示例：**
 
@@ -108,23 +108,23 @@ agentkit/
 
 ---
 
-### Ch17 MCP 协议（~6-7k 字）
+### Ch18 MCP 协议（~6-7k 字）
 
 读完应能独立写一个 MCP server，并理解 MCP 在 Harness 中的位置。
 
 **子节：**
 
-- 17.1 为什么需要 MCP：工具调用的标准化困境
-- 17.2 MCP 的架构：Host / Client / Server 三角色
-- 17.3 四大原语之一：Resource（应用控制、数据提供）
-- 17.4 四大原语之二：Tool（模型控制、可执行函数）
-- 17.5 四大原语之三：Prompt（用户控制、可复用模板）
-- 17.6 四大原语之四：Sampling + Elicitation（客户端能力、2026 新增）
-- 17.7 JSON-RPC 2.0 消息结构与一次 `tools/call` 往返
-- 17.8 Transport：stdio / Streamable HTTP（替代 SSE）
-- 17.9 一个最小可运行的 MCP server（FastMCP 装饰器风格）
-- 17.10 一个最小可运行的 MCP client
-- 17.11 MCP 在 Harness 里的位置：协议适配器
+- 18.1 为什么需要 MCP：工具调用的标准化困境
+- 18.2 MCP 的架构：Host / Client / Server 三角色
+- 18.3 四大原语之一：Resource（应用控制、数据提供）
+- 18.4 四大原语之二：Tool（模型控制、可执行函数）
+- 18.5 四大原语之三：Prompt（用户控制、可复用模板）
+- 18.6 四大原语之四：Sampling + Elicitation（客户端能力、2026 新增）
+- 18.7 JSON-RPC 2.0 消息结构与一次 `tools/call` 往返
+- 18.8 Transport：stdio / Streamable HTTP（替代 SSE）
+- 18.9 一个最小可运行的 MCP server（FastMCP 装饰器风格）
+- 18.10 一个最小可运行的 MCP client
+- 18.11 MCP 在 Harness 里的位置：协议适配器
 
 **Anchor 示例：**
 
@@ -136,22 +136,22 @@ agentkit/
 
 ---
 
-### Ch18 A2A 协议（~5-6k 字）
+### Ch19 A2A 协议（~5-6k 字）
 
 读完应能理解"agent 调另一个 agent"和"agent 调一个工具"的本质差异，并能写一个最小 A2A server。
 
 **子节：**
 
-- 18.1 为什么需要 A2A：多 agent 协作的标准化
-- 18.2 A2A 与 MCP 的关系：一句话原则（MCP inside，A2A between）
-- 18.3 Agent Card：能力自描述（`/.well-known/agent.json`）
-- 18.4 Task 生命周期八态：submitted → working → {input-required, auth-required} → {completed, failed, canceled, rejected}
-- 18.5 Message / Part / Artifact 三层数据结构
-- 18.6 三种交互机制：polling / SSE streaming / push notifications
-- 18.7 认证：OAuth 2.0 / JWT / mTLS / API key（v1.0 新增的 JWS 签名）
-- 18.8 一个最小可运行的 A2A server（FastAPI 风格）
-- 18.9 一个最小可运行的 A2A client（拉取 Agent Card → 发任务 → 收结果）
-- 18.10 A2A 在 Harness 里的位置：peer-to-peer 协议
+- 19.1 为什么需要 A2A：多 agent 协作的标准化
+- 19.2 A2A 与 MCP 的关系：一句话原则（MCP inside，A2A between）
+- 19.3 Agent Card：能力自描述（`/.well-known/agent.json`）
+- 19.4 Task 生命周期八态：submitted → working → {input-required, auth-required} → {completed, failed, canceled, rejected}
+- 19.5 Message / Part / Artifact 三层数据结构
+- 19.6 三种交互机制：polling / SSE streaming / push notifications
+- 19.7 认证：OAuth 2.0 / JWT / mTLS / API key（v1.0 新增的 JWS 签名）
+- 19.8 一个最小可运行的 A2A server（FastAPI 风格）
+- 19.9 一个最小可运行的 A2A client（拉取 Agent Card → 发任务 → 收结果）
+- 19.10 A2A 在 Harness 里的位置：peer-to-peer 协议
 
 **Anchor 示例：**
 
@@ -163,26 +163,26 @@ agentkit/
 
 ---
 
-### Ch19 上下文工程与记忆（~6-7k 字）
+### Ch20 上下文工程与记忆（~6-7k 字）
 
 读完应能解释"上下文工程"是什么、能说出几种常见压缩策略、能区分"上下文管理"和"记忆系统"。
 
 **子节：**
 
-- 19.1 一个朴素的问题：为什么"上下文窗口变大"还不够
-- 19.2 上下文工程（context engineering）的定义（Anthropic 2025.09）
-- 19.3 注意力预算（attention budget）的直觉
-- 19.4 系统提示的"恰到好处区"：不要太死板、不要太模糊
-- 19.5 上下文压缩（compaction）的四种策略：
+- 20.1 一个朴素的问题：为什么"上下文窗口变大"还不够
+- 20.2 上下文工程（context engineering）的定义（Anthropic 2025.09）
+- 20.3 注意力预算（attention budget）的直觉
+- 20.4 系统提示的"恰到好处区"：不要太死板、不要太模糊
+- 20.5 上下文压缩（compaction）的四种策略：
   - 滑动窗口（sliding window）
   - 摘要压缩（summarization）
   - 检查点（checkpoint / branch_summary）
   - 子 agent 隔离（subagent fresh context）
-- 19.6 记忆的三层模型：工作记忆 / 会话记忆 / 长期记忆
-- 19.7 会话状态的设计：线性日志 vs JSONL 树（带 parentId / fork）
-- 19.8 跨模型上下文移交：把 Anthropic 私有字段、Cohere、Google 的差异屏蔽掉
-- 19.9 上下文工程的常见反模式
-- 19.10 一个上下文压缩示意代码（**非可运行，仅展示策略骨架**）
+- 20.6 记忆的三层模型：工作记忆 / 会话记忆 / 长期记忆
+- 20.7 会话状态的设计：线性日志 vs JSONL 树（带 parentId / fork）
+- 20.8 跨模型上下文移交：把 Anthropic 私有字段、Cohere、Google 的差异屏蔽掉
+- 20.9 上下文工程的常见反模式
+- 20.10 一个上下文压缩示意代码（**非可运行，仅展示策略骨架**）
 
 **Anchor 示例：**
 
@@ -193,26 +193,26 @@ agentkit/
 
 ---
 
-### Ch20 Hooks / Permissions / Sandbox（~6-7k 字）
+### Ch21 Hooks / Permissions / Sandbox（~6-7k 字）
 
 读完应能解释 harness 是怎么"管住"Agent 的——即 prompt 是软约束、harness 是硬约束。
 
 **子节：**
 
-- 20.1 一个朴素的问题：模型说了不等于做了——为什么需要 hook
-- 20.2 三层防御模型：
+- 21.1 一个朴素的问题：模型说了不等于做了——为什么需要 hook
+- 21.2 三层防御模型：
   - **Layer 1 权限闸门**（permission gate）：deny-by-default + allow/ask/deny 三档
   - **Layer 2 沙箱**（sandbox）：OS 级原语（Seatbelt / Landlock / seccomp）优于容器
   - **Layer 3 hooks**：在生命周期事件点上跑确定性的脚本
-- 20.3 Hooks：pre-tool / post-tool / pre-edit / post-edit / session-start / session-end
-- 20.4 Hook 的输入输出协议：stdin JSON + exit code（0 / 2 / 其他）
-- 20.5 Permissions 策略：规则文件语法（allow / deny / ask + 通配符）
-- 20.6 命令解析：为什么 AST 优于字符串匹配（防 `git status && curl evil.sh`）
-- 20.7 Sandbox 的三档：read-only / workspace-write / full-access（跨产品通用命名）
-- 20.8 网络隔离：默认 deny、per-operation 授权
-- 20.9 子 agent 隔离：fresh-context reviewer / maker-checker 模式
-- 20.10 一个 hooks 注册的最小代码
-- 20.11 一个权限策略的最小代码
+- 21.3 Hooks：pre-tool / post-tool / pre-edit / post-edit / session-start / session-end
+- 21.4 Hook 的输入输出协议：stdin JSON + exit code（0 / 2 / 其他）
+- 21.5 Permissions 策略：规则文件语法（allow / deny / ask + 通配符）
+- 21.6 命令解析：为什么 AST 优于字符串匹配（防 `git status && curl evil.sh`）
+- 21.7 Sandbox 的三档：read-only / workspace-write / full-access（跨产品通用命名）
+- 21.8 网络隔离：默认 deny、per-operation 授权
+- 21.9 子 agent 隔离：fresh-context reviewer / maker-checker 模式
+- 21.10 一个 hooks 注册的最小代码
+- 21.11 一个权限策略的最小代码
 
 **Anchor 示例：**
 
@@ -224,18 +224,18 @@ agentkit/
 
 ---
 
-### Ch21 小结与衔接（~3-4k 字）
+### Ch22 小结与衔接（~3-4k 字）
 
 读完应对 Part 4 有一个 30 秒回顾，并对接 Part 5 形成清晰期待。
 
 **子节：**
 
-- 21.1 全 Part 回顾：harness 是什么、解决什么、不解决什么
-- 21.2 三大协议在 harness 中的角色再回顾：MCP / A2A / x402
-- 21.3 跨产品的通用决策清单（10 条）：deny-by-default / OS 沙箱优于容器 / hook 是确定性的 / 提示是软约束 / 子 agent 隔离 / 命令 AST / 工具宁少毋滥 / 会话可恢复 / 上下文压缩是策略不是机械 / 网络默认 deny
-- 21.4 常见误用与失败模式
-- 21.5 衔接 Part 5：接下来讲怎么"实现"——Harness 给的 API 怎么变成一个能跑的 Agent
-- 21.6 Part 4 本章参考
+- 22.1 全 Part 回顾：harness 是什么、解决什么、不解决什么
+- 22.2 三大协议在 harness 中的角色再回顾：MCP / A2A / x402
+- 22.3 跨产品的通用决策清单（10 条）：deny-by-default / OS 沙箱优于容器 / hook 是确定性的 / 提示是软约束 / 子 agent 隔离 / 命令 AST / 工具宁少毋滥 / 会话可恢复 / 上下文压缩是策略不是机械 / 网络默认 deny
+- 22.4 常见误用与失败模式
+- 22.5 衔接 Part 5：接下来讲怎么"实现"——Harness 给的 API 怎么变成一个能跑的 Agent
+- 22.6 Part 4 本章参考
 
 **Anchor 示例：**
 
@@ -247,7 +247,7 @@ agentkit/
 ## 5. 写作约定（简版，详见 CLAUDE.md）
 
 - 每章模板：标题 → 一句话简介 → 本章目标（3-5 条 bullet）→ 本章导览（mermaid 总览图）→ 子节 → 本章小结 → 本章参考
-- Mermaid 仅用四种图：`graph` / `flowchart` / `sequenceDiagram` / `mindmap` / `stateDiagram-v2`（仅 Ch18 用一次）
+- Mermaid 用六种图（CLAUDE.md 第六节）：`graph` / `flowchart` / `sequenceDiagram` / `mindmap` / `timeline` / `stateDiagram-v2`
 - 复杂关系用表格，不堆 mermaid
 - 引用：随文 markdown 链接 + 章末"本章参考"（分必读论文 / 推荐博客 / 视频课程 三类）
 - 代码：中文注释；可运行示例文件头加 `# runnable: yes`
@@ -267,7 +267,7 @@ agentkit/
 - 含至少 1 个 mermaid + 1 个表格
 - 字数在 ±20% 区间内
 - 关键概念全覆盖（每章 5-8 个）
-- Ch17/Ch18/Ch20 必须有可运行代码示例（其他章示意性即可）
+- Ch18/Ch19/Ch21 必须有可运行代码示例（其他章示意性即可）
 
 ### Part 4 整体验收
 
@@ -306,12 +306,12 @@ agentkit/
 
 | 衔接点 | Part 4 引用 | Part N 内容 |
 |---|---|---|
-| 为什么 harness 是必要的 | 16.1 | Part 3 Ch9（认知架构） |
-| MCP 是怎么进入 Agent 循环的 | 17.11 | Part 5 Ch23（tool calling） |
-| A2A 任务的并发模式 | 18.4 | Part 5 Ch26（多 Agent 协作） |
-| 上下文压缩的具体实现 | 19.5 | Part 5 Ch24（记忆） |
-| sandbox 的 OS 原语 | 20.7 | Part 6 Ch28（安全/红队） |
-| 协议栈全景图 | 21.2 | Part 5 Ch22（协议接入） |
+| 为什么 harness 是必要的 | 17.1 | Part 3 Ch11（认知架构） |
+| MCP 是怎么进入 Agent 循环的 | 18.11 | Part 5 Ch23（Tool Calling 与 RAG） |
+| A2A 任务的并发模式 | 19.4 | Part 5 Ch25（多 Agent 协作） |
+| 上下文压缩的具体实现 | 20.5 | Part 5 Ch24（记忆与规划） |
+| sandbox 的 OS 原语 | 21.7 | Part 6 Ch31（Security 与红队） |
+| 协议栈全景图 | 22.2 | Part 5 Ch27（协议集成） |
 
 ---
 
@@ -397,4 +397,4 @@ agentkit/
 4. **A2A 章节定位：** 必须以"peer-to-peer 协作协议"为主，不展开企业内部多 agent 编排（→ Part 5）。
 5. **上下文工程 vs 记忆：** 严格区分——上下文工程是"如何裁剪 prompt 给模型"，记忆是"如何持久化"；Part 4 偏前者，Part 5 偏后者。
 6. **Hooks / Permissions / Sandbox：** 三个概念必须分开成章下三节，不能合并讲；否则读者分不清"hook 是事件、permission 是规则、sandbox 是隔离"。
-7. **x402 / AP2：** Part 4 只在 Ch21 末尾以"协议栈全景图"一句话提及，不展开；实现细节给 Part 6 工业落地。
+7. **x402 / AP2：** Part 4 只在 Ch22 末尾以"协议栈全景图"一句话提及，不展开；实现细节给 Part 6 工业落地。

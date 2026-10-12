@@ -53,29 +53,29 @@ Part 3 讲了 Agent 的认知架构与范式（"Agent 在想什么"），Part 4 
 agentkit/
 ├── part-5-agent功能实现/
 │   ├── README.md                       # Part 5 目录与简介
-│   ├── ch22-tool-calling与rag.md       # Tool Calling + RAG
-│   ├── ch23-记忆与规划.md              # Memory + Planning
-│   ├── ch24-多agent协作.md             # Multi-Agent Collaboration
-│   ├── ch25-code-execution.md          # 代码执行沙箱
-│   ├── ch26-协议集成.md                # MCP / A2A / x402
-│   └── ch27-小结与衔接.md              # Part 5 收束 + 衔接 Part 6
+│   ├── ch23-tool-calling与rag.md       # Tool Calling + RAG
+│   ├── ch24-记忆与规划.md              # Memory + Planning
+│   ├── ch25-多agent协作.md             # Multi-Agent Collaboration
+│   ├── ch26-code-execution.md          # 代码执行沙箱
+│   ├── ch27-协议集成.md                # MCP / A2A / x402
+│   └── ch28-小结与衔接.md              # Part 5 收束 + 衔接 Part 6
 └── code/
     └── part-5/
         ├── README.md                   # 依赖：openai/anthropic/mcp/fastmcp/e2b 等
-        ├── tool_calling.py             # Ch22 tool calling 最小循环
-        ├── naive_rag.py                # Ch22 Naive RAG 端到端
-        ├── agentic_rag.py              # Ch22 Agentic RAG（带 reranker + query rewrite）
-        ├── memory_short_term.py        # Ch23 滑动窗口记忆
-        ├── memory_long_term.py         # Ch23 三层记忆（KV + vector + relational）
-        ├── plan_and_execute.py         # Ch23 Plan-and-Execute with replanning
-        ├── multi_agent_crew.py         # Ch24 Crew 风格多 Agent
-        ├── multi_agent_langgraph.py    # Ch24 LangGraph 风格状态机
-        ├── code_exec_e2b.py            # Ch25 E2B 沙箱执行
-        ├── mcp_server.py               # Ch26 FastMCP 服务端（tools + resources + prompts）
-        ├── mcp_client.py               # Ch26 FastMCP 客户端
-        ├── a2a_server.py               # Ch26 A2A agent card + JSON-RPC 服务端
-        ├── a2a_client.py               # Ch26 A2A 客户端（发现 + 任务提交）
-        └── x402_demo.py                # Ch26 x402 micropayment 演示
+        ├── tool_calling.py             # Ch23 tool calling 最小循环
+        ├── naive_rag.py                # Ch23 Naive RAG 端到端
+        ├── agentic_rag.py              # Ch23 Agentic RAG（带 reranker + query rewrite）
+        ├── memory_short_term.py        # Ch24 滑动窗口记忆
+        ├── memory_long_term.py         # Ch24 三层记忆（KV + vector + relational）
+        ├── plan_and_execute.py         # Ch24 Plan-and-Execute with replanning
+        ├── multi_agent_crew.py         # Ch25 Crew 风格多 Agent
+        ├── multi_agent_langgraph.py    # Ch25 LangGraph 风格状态机
+        ├── code_exec_e2b.py            # Ch26 E2B 沙箱执行
+        ├── mcp_server.py               # Ch27 FastMCP 服务端（tools + resources + prompts）
+        ├── mcp_client.py               # Ch27 FastMCP 客户端
+        ├── a2a_server.py               # Ch27 A2A agent card + JSON-RPC 服务端
+        ├── a2a_client.py               # Ch27 A2A 客户端（发现 + 任务提交）
+        └── x402_demo.py                # Ch27 x402 micropayment 演示
 ```
 
 > **总计：** 14 个 Python 示例文件 + 1 个 README。比 Part 1（3 个文件）、Part 4（计划 4-5 个文件）明显更多。这是 Part 5 作为"实现篇"的特征。
@@ -84,22 +84,22 @@ agentkit/
 
 ## 4. Part 5 六章内容大纲
 
-### Ch22 Tool Calling 与 RAG（~6.5k 字）
+### Ch23 Tool Calling 与 RAG（~6.5k 字）
 
 读完应能**独立实现一个支持 tool calling 的 Agent 循环**，并**区分 Naive / Advanced / Agentic 三种 RAG 范式**。
 
-- 22.1 引子：Agent 的"手脚"——为什么没有 tool calling 就没有真正的 Agent
-- 22.2 **Tool calling 的协议面**：JSON Schema 描述、OpenAI `tools` vs Anthropic `tools` 字段差异、`tool_choice`（auto / any / none / 指定名字）
-- 22.3 **Tool calling 的循环**：Thought → Tool Call → Tool Result → Observation → 下一轮（配 mermaid sequenceDiagram）
-- 22.4 **并行 tool 调用**：何时拆开、何时合并；`disable_parallel_tool_use` 的场景
-- 22.5 **错误处理与重试**：tool 抛错 → 把错误当 Observation 喂回去 / 重试上限 / 退避
-- 22.6 **RAG 的动机**：为什么纯 LLM 不够——幻觉、知识截止、垂直知识
-- 22.7 **Naive RAG**：chunk → embed → top-k → prompt 注入（最小可运行）
-- 22.8 **Advanced RAG**：query rewrite + reranker + hybrid（BM25 + dense）+ HyDE
-- 22.9 **Agentic RAG**：检索本身变成 tool，让 Agent 决定查什么、查几次、如何合并
-- 22.10 **向量数据库选型**：Chroma（本地原型）vs Qdrant / Weaviate（生产）vs pgvector（小团队一体化）；一句话点名 Pinecone / Milvus
-- 22.11 **三个范式对比表**：成本、延迟、可控性、适用场景
-- 22.12 Part 5 章末小结 + 与 Ch23 衔接
+- 23.1 引子：Agent 的"手脚"——为什么没有 tool calling 就没有真正的 Agent
+- 23.2 **Tool calling 的协议面**：JSON Schema 描述、OpenAI `tools` vs Anthropic `tools` 字段差异、`tool_choice`（auto / any / none / 指定名字）
+- 23.3 **Tool calling 的循环**：Thought → Tool Call → Tool Result → Observation → 下一轮（配 mermaid sequenceDiagram）
+- 23.4 **并行 tool 调用**：何时拆开、何时合并；`disable_parallel_tool_use` 的场景
+- 23.5 **错误处理与重试**：tool 抛错 → 把错误当 Observation 喂回去 / 重试上限 / 退避
+- 23.6 **RAG 的动机**：为什么纯 LLM 不够——幻觉、知识截止、垂直知识
+- 23.7 **Naive RAG**：chunk → embed → top-k → prompt 注入（最小可运行）
+- 23.8 **Advanced RAG**：query rewrite + reranker + hybrid（BM25 + dense）+ HyDE
+- 23.9 **Agentic RAG**：检索本身变成 tool，让 Agent 决定查什么、查几次、如何合并
+- 23.10 **向量数据库选型**：Chroma（本地原型）vs Qdrant / Weaviate（生产）vs pgvector（小团队一体化）；一句话点名 Pinecone / Milvus
+- 23.11 **三个范式对比表**：成本、延迟、可控性、适用场景
+- 23.12 Part 5 章末小结 + 与 Ch24 衔接
 
 **Anchor 示例：**
 
@@ -116,25 +116,25 @@ agentkit/
 
 ---
 
-### Ch23 记忆与规划（~6k 字）
+### Ch24 记忆与规划（~6k 字）
 
 读完应能**独立设计一个三层记忆系统**，并**实现 Plan-and-Execute with replanning**。
 
-- 23.1 引子：为什么 LLM 的"上下文窗口"不等于"记忆"
-- 23.2 **短时记忆（Working Memory）**：context window 里最近 N 轮，滑动窗口 + observation masking
-- 23.3 **中时记忆（Hot Memory）**：Redis / Key-Value，TTL 自动过期，存"这一两天还在意"的事实
-- 23.4 **长时记忆（Long-Term Memory）**：三层混合
+- 24.1 引子：为什么 LLM 的"上下文窗口"不等于"记忆"
+- 24.2 **短时记忆（Working Memory）**：context window 里最近 N 轮，滑动窗口 + observation masking
+- 24.3 **中时记忆（Hot Memory）**：Redis / Key-Value，TTL 自动过期，存"这一两天还在意"的事实
+- 24.4 **长时记忆（Long-Term Memory）**：三层混合
   - 向量层：语义检索（pgvector / Qdrant / Weaviate）
   - 关系层：PostgreSQL，结构化事实 + 行级安全
   - 时序层：可选，Zep/Graphiti 用于"事实会变"的场景
-- 23.5 **记忆的写入策略**：always-write / significant-write（让 LLM 判断）/ never-write
-- 23.6 **记忆的检索流水线**：user profile 注入 → recency 窗口 → hot memory → semantic search → entity recognition → 拼装
-- 23.7 **记忆框架一句话点名**：mem0（bolt-on 通用）、Letta（自编辑式长跑）、Zep（图谱 + 时序）；不展开框架内部
-- 23.8 **规划范式回顾**：ReAct / Plan-and-Execute / Reflexion —— Part 3 已经讲原理，本章给**实现接口**
-- 23.9 **Plan-and-Execute 实现**：planner（强模型）+ executor（弱模型）+ replan 钩子（fail → 重新规划）
-- 23.10 **Reflection 实现**：critic（窄而具体的评判）+ revision loop（防 regression 的对比步骤）
-- 23.11 **何时用哪种规划**：ReAct（<10 步）/ Plan-and-Execute（多步研究）/ Reflection（质量优先）
-- 23.12 Part 5 章末小结 + 与 Ch24 衔接
+- 24.5 **记忆的写入策略**：always-write / significant-write（让 LLM 判断）/ never-write
+- 24.6 **记忆的检索流水线**：user profile 注入 → recency 窗口 → hot memory → semantic search → entity recognition → 拼装
+- 24.7 **记忆框架一句话点名**：mem0（bolt-on 通用）、Letta（自编辑式长跑）、Zep（图谱 + 时序）；不展开框架内部
+- 24.8 **规划范式回顾**：ReAct / Plan-and-Execute / Reflexion —— Part 3 已经讲原理，本章给**实现接口**
+- 24.9 **Plan-and-Execute 实现**：planner（强模型）+ executor（弱模型）+ replan 钩子（fail → 重新规划）
+- 24.10 **Reflection 实现**：critic（窄而具体的评判）+ revision loop（防 regression 的对比步骤）
+- 24.11 **何时用哪种规划**：ReAct（<10 步）/ Plan-and-Execute（多步研究）/ Reflection（质量优先）
+- 24.12 Part 5 章末小结 + 与 Ch25 衔接
 
 **Anchor 示例：**
 
@@ -150,22 +150,22 @@ agentkit/
 
 ---
 
-### Ch24 多 Agent 协作（~6k 字）
+### Ch25 多 Agent 协作（~6k 字）
 
 读完应能**区分三种多 Agent 架构**，并能独立实现 Crew 风格的角色分工。
 
-- 24.1 引子：单 Agent 的天花板——为什么需要多 Agent
-- 24.2 **三种多 Agent 架构**：role-based（Crew）vs graph-based（LangGraph）vs conversation-based（AutoGen）
-- 24.3 **角色分工的直觉**：项目经理 / 研究员 / 写手 / 审稿人——为什么拆 4 个比拆 1 个效果好
-- 24.4 **Crew 风格实现**：role + goal + backstory + task → 顺序 / 并行 / 分层执行
-- 24.5 **LangGraph 风格实现**：把 Agent 当状态机节点，循环就是图遍历
-- 24.6 **AutoGen 风格一句话**：对话驱动、双向 messaging；不展开
-- 24.7 **通信原语**：消息总线（message bus）/ shared state / 共享文件系统
-- 24.8 **冲突解决**：两个 Agent 抢同一份输出 / 投票 / supervisor 仲裁
-- 24.9 **失败传播**：一个 Agent 报错如何不拖垮整组——task graph + checkpoint + retry scope
-- 24.10 **可观测性要求**：每个 Agent 的 token 用量、步骤数、决策日志（提示在 Part 6 详细展开）
-- 24.11 **三种架构对比表**：可控性 / 学习曲线 / 适用场景
-- 24.12 Part 5 章末小结 + 与 Ch25 衔接
+- 25.1 引子：单 Agent 的天花板——为什么需要多 Agent
+- 25.2 **三种多 Agent 架构**：role-based（Crew）vs graph-based（LangGraph）vs conversation-based（AutoGen）
+- 25.3 **角色分工的直觉**：项目经理 / 研究员 / 写手 / 审稿人——为什么拆 4 个比拆 1 个效果好
+- 25.4 **Crew 风格实现**：role + goal + backstory + task → 顺序 / 并行 / 分层执行
+- 25.5 **LangGraph 风格实现**：把 Agent 当状态机节点，循环就是图遍历
+- 25.6 **AutoGen 风格一句话**：对话驱动、双向 messaging；不展开
+- 25.7 **通信原语**：消息总线（message bus）/ shared state / 共享文件系统
+- 25.8 **冲突解决**：两个 Agent 抢同一份输出 / 投票 / supervisor 仲裁
+- 25.9 **失败传播**：一个 Agent 报错如何不拖垮整组——task graph + checkpoint + retry scope
+- 25.10 **可观测性要求**：每个 Agent 的 token 用量、步骤数、决策日志（提示在 Part 6 详细展开）
+- 25.11 **三种架构对比表**：可控性 / 学习曲线 / 适用场景
+- 25.12 Part 5 章末小结 + 与 Ch26 衔接
 
 **Anchor 示例：**
 
@@ -180,22 +180,22 @@ agentkit/
 
 ---
 
-### Ch25 Code Execution（~6k 字）
+### Ch26 Code Execution（~6k 字）
 
 读完应能**为 Agent 接上一个安全的代码执行沙箱**，并理解"为什么 LLM 不应该直接生成可执行代码"。
 
-- 25.1 引子：Agent 自己写代码并执行——为什么这是 2026 主流 harness 的标配
-- 25.2 **为什么需要沙箱**：安全 / 可重放 / 资源限制 / 状态隔离
-- 25.3 **沙箱的四个层级**：subprocess（本地进程）→ docker（容器）→ microVM（Firecracker）→ remote API（E2B / Modal）
-- 25.4 **subprocess 沙箱**：最简形态，Python `subprocess.run` + resource limits + timeout；适用 trust boundary 内的脚本
-- 25.5 **docker 沙箱**：中等隔离，需要 Docker daemon；通用但部署成本
-- 25.6 **microVM 沙箱**：Firecracker / gVisor，强隔离；适合生产云端
-- 25.7 **远程 API 沙箱**：E2B / Modal / CodeSandbox，按调用计费、无运维；适合 MVP
-- 25.8 **代码作为 tool 的设计**：tool "run_python" 接收 `code: str` + 返回 `stdout / stderr / artifacts`；让 LLM 把它当普通 tool 调用
-- 25.9 **状态管理**：每个会话一个沙箱实例 / 跨会话复用（昂贵但更接近 REPL 体验）
-- 25.10 **典型场景**：数据清洗 / 一次性脚本 / 数学计算 / 文件批量处理
-- 25.11 **安全红线**：网络访问控制 / 文件系统挂载 / 输出体积上限 / secret 脱敏
-- 25.12 Part 5 章末小结 + 与 Ch26 衔接
+- 26.1 引子：Agent 自己写代码并执行——为什么这是 2026 主流 harness 的标配
+- 26.2 **为什么需要沙箱**：安全 / 可重放 / 资源限制 / 状态隔离
+- 26.3 **沙箱的四个层级**：subprocess（本地进程）→ docker（容器）→ microVM（Firecracker）→ remote API（E2B / Modal）
+- 26.4 **subprocess 沙箱**：最简形态，Python `subprocess.run` + resource limits + timeout；适用 trust boundary 内的脚本
+- 26.5 **docker 沙箱**：中等隔离，需要 Docker daemon；通用但部署成本
+- 26.6 **microVM 沙箱**：Firecracker / gVisor，强隔离；适合生产云端
+- 26.7 **远程 API 沙箱**：E2B / Modal / CodeSandbox，按调用计费、无运维；适合 MVP
+- 26.8 **代码作为 tool 的设计**：tool "run_python" 接收 `code: str` + 返回 `stdout / stderr / artifacts`；让 LLM 把它当普通 tool 调用
+- 26.9 **状态管理**：每个会话一个沙箱实例 / 跨会话复用（昂贵但更接近 REPL 体验）
+- 26.10 **典型场景**：数据清洗 / 一次性脚本 / 数学计算 / 文件批量处理
+- 26.11 **安全红线**：网络访问控制 / 文件系统挂载 / 输出体积上限 / secret 脱敏
+- 26.12 Part 5 章末小结 + 与 Ch27 衔接
 
 **Anchor 示例：**
 
@@ -209,26 +209,26 @@ agentkit/
 
 ---
 
-### Ch26 协议集成：MCP / A2A / x402（~7k 字）
+### Ch27 协议集成：MCP / A2A / x402（~7k 字）
 
 读完应能**为本地 Agent 实现一个 MCP server**，**为一个 Agent 暴露 A2A agent card**，并**让一个工具调用走 x402 微支付**。这是 Part 5 全章最贴近"2026 行业标准"的一章。
 
-- 26.1 引子：为什么协议化——从"我的 Agent 能用"到"别人也能用我的 Agent"
-- 26.2 **协议栈全景**：MCP（Anthropic，2024.11→2025.11→2026.07 三代） / A2A（Google→Linux Foundation, 2026.04 v1.0） / x402（Coinbase, 2025） / AG-UI（CopilotKit, 2026 仍在 draft）
-- 26.3 **MCP 的核心抽象**：tools（可调用） / resources（只读数据） / prompts（消息模板） / sampling（服务器反向请求 LLM）
-- 26.4 **MCP server 实现（FastMCP）**：`@mcp.tool()` / `@mcp.resource()` / `@mcp.prompt()` 三种装饰器；stdio + Streamable HTTP 两种 transport
-- 26.5 **MCP Streamable HTTP 演进**：2024.11-05 HTTP+SSE（已弃）→ 2025-03-26 单端点 Streamable HTTP + session id → 2026-07-28 移除 session；理解"为什么"比记版本号更重要
-- 26.6 **MCP 客户端**：用 `MCPClient` 连 server，tools / resources 直接进入 Agent 的 tool registry
-- 26.7 **A2A 的核心抽象**：agent card（`/.well-known/agent.json` 描述技能 + endpoint + 鉴权） + task（JSON-RPC over HTTP） + artifact（产物）
-- 26.8 **A2A agent card 实现**：写一个最小 agent card（name / description / skills / capabilities）
-- 26.9 **A2A server 任务端点**：接受 task → 调度本地 Agent → 返回 artifact
-- 26.10 **A2A 客户端**：discovery（拉 agent card）→ 选 skill → submit task → 拉 artifact
-- 26.11 **x402 的动机**：HTTP 402 沉睡 30 年 → Agent 经济的微支付需要 → USDC + EIP-3009 + facilitator（Coinbase CDP）
-- 26.12 **x402 工作流**：客户端请求 → 收 402 + 支付条款 → 签 USDC → 重试带 payment payload → facilitator 结算
-- 26.13 **x402 与 Agent 的结合**：把 `tool calling` 的某个 tool 标记为"按次计费"，被调用时走 x402 流程
-- 26.14 **AG-UI 一句话**：Agent ↔ 前端应用的事件流（生命周期 / 文本流 / 工具调用 / 状态快照）；draft 状态，Part 6 再展开
-- 26.15 **协议组合实例**：一个 MCP server 同时被本地 + 远端 Agent 调用；远端 Agent 通过 A2A 发现它，部分敏感能力走 x402
-- 26.16 Part 5 章末小结 + 与 Ch27 衔接
+- 27.1 引子：为什么协议化——从"我的 Agent 能用"到"别人也能用我的 Agent"
+- 27.2 **协议栈全景**：MCP（Anthropic，2024.11→2025.11→2026.07 三代） / A2A（Google→Linux Foundation, 2026.04 v1.0） / x402（Coinbase, 2025） / AG-UI（CopilotKit, 2026 仍在 draft）
+- 27.3 **MCP 的核心抽象**：tools（可调用） / resources（只读数据） / prompts（消息模板） / sampling（服务器反向请求 LLM）
+- 27.4 **MCP server 实现（FastMCP）**：`@mcp.tool()` / `@mcp.resource()` / `@mcp.prompt()` 三种装饰器；stdio + Streamable HTTP 两种 transport
+- 27.5 **MCP Streamable HTTP 演进**：2024.11-05 HTTP+SSE（已弃）→ 2025-03-26 单端点 Streamable HTTP + session id → 2026-07-28 移除 session；理解"为什么"比记版本号更重要
+- 27.6 **MCP 客户端**：用 `MCPClient` 连 server，tools / resources 直接进入 Agent 的 tool registry
+- 27.7 **A2A 的核心抽象**：agent card（`/.well-known/agent.json` 描述技能 + endpoint + 鉴权） + task（JSON-RPC over HTTP） + artifact（产物）
+- 27.8 **A2A agent card 实现**：写一个最小 agent card（name / description / skills / capabilities）
+- 27.9 **A2A server 任务端点**：接受 task → 调度本地 Agent → 返回 artifact
+- 27.10 **A2A 客户端**：discovery（拉 agent card）→ 选 skill → submit task → 拉 artifact
+- 27.11 **x402 的动机**：HTTP 402 沉睡 30 年 → Agent 经济的微支付需要 → USDC + EIP-3009 + facilitator（Coinbase CDP）
+- 27.12 **x402 工作流**：客户端请求 → 收 402 + 支付条款 → 签 USDC → 重试带 payment payload → facilitator 结算
+- 27.13 **x402 与 Agent 的结合**：把 `tool calling` 的某个 tool 标记为"按次计费"，被调用时走 x402 流程
+- 27.14 **AG-UI 一句话**：Agent ↔ 前端应用的事件流（生命周期 / 文本流 / 工具调用 / 状态快照）；draft 状态，Part 6 再展开
+- 27.15 **协议组合实例**：一个 MCP server 同时被本地 + 远端 Agent 调用；远端 Agent 通过 A2A 发现它，部分敏感能力走 x402
+- 27.16 Part 5 章末小结 + 与 Ch28 衔接
 
 **Anchor 示例：**
 
@@ -248,16 +248,16 @@ agentkit/
 
 ---
 
-### Ch27 Part 5 小结与衔接 Part 6（~2.5k 字）
+### Ch28 Part 5 小结与衔接 Part 6（~2.5k 字）
 
 读完应能在**一张图上**画出 Part 5 涵盖的"六大功能积木"，并指出 Part 6 将回答的工业落地问题。
 
-- 27.1 引子：Part 5 走完一遍——你手里有了哪些积木
-- 27.2 **Part 5 功能总览图**：tool calling + RAG + memory + planning + multi-agent + code execution + 协议层（MCP / A2A / x402）
-- 27.3 **可复现的"70% 主流产品特性"自检**：对照 Claude Code / Pi / Codex 三者核心特性，本 Part 给出"是否已实现"的清单
-- 27.4 **从"能跑"到"能上线"的缺口**：错误率 / 成本 / 安全 / 可观测性 / 合规——这些是 Part 6 的范畴
-- 27.5 **与 Part 6 的衔接**：LLM-native 可观测性（Langfuse / Helicone / Arize Phoenix / OpenLLMetry）、evaluation（LLM-as-judge）、model router、EU AI Act / AIUC-1 合规、真实案例
-- 27.6 **写给读者的两个练习**：① 给自己的本地 Agent 加一个 MCP server；② 让两个 Agent 通过 A2A 互派任务
+- 28.1 引子：Part 5 走完一遍——你手里有了哪些积木
+- 28.2 **Part 5 功能总览图**：tool calling + RAG + memory + planning + multi-agent + code execution + 协议层（MCP / A2A / x402）
+- 28.3 **可复现的"70% 主流产品特性"自检**：对照 Claude Code / Pi / Codex 三者核心特性，本 Part 给出"是否已实现"的清单
+- 28.4 **从"能跑"到"能上线"的缺口**：错误率 / 成本 / 安全 / 可观测性 / 合规——这些是 Part 6 的范畴
+- 28.5 **与 Part 6 的衔接**：LLM-native 可观测性（Langfuse / Helicone / Arize Phoenix / OpenLLMetry）、evaluation（LLM-as-judge）、model router、EU AI Act / AIUC-1 合规、真实案例
+- 28.6 **写给读者的两个练习**：① 给自己的本地 Agent 加一个 MCP server；② 让两个 Agent 通过 A2A 互派任务
 
 **Anchor 示例：**
 
@@ -270,7 +270,7 @@ agentkit/
 ## 5. 写作约定（简版，详见 CLAUDE.md）
 
 - 每章模板：标题 → 一句话简介 → 本章目标（3-5 条 bullet）→ 本章导览（mermaid 总览图）→ 子节 → 本章小结 → 本章参考
-- Mermaid 仅用四种图：`graph` / `flowchart` / `sequenceDiagram` / `mindmap`
+- Mermaid 用六种图（CLAUDE.md 第六节）：`graph` / `flowchart` / `sequenceDiagram` / `mindmap` / `timeline` / `stateDiagram-v2`
 - 复杂关系用表格，不堆 mermaid
 - 引用：随文 markdown 链接 + 章末 "本章参考"（分必读论文 / 推荐博客 / 视频课程 三类）
 - 代码：中文注释；可运行示例文件头加 `# runnable: yes`；不可运行示意文件头加 `# illustrative only`
@@ -278,7 +278,7 @@ agentkit/
   - 完整示例文件 ≤ 200 行（除少数例外）
   - 每个 `.py` 文件顶部 3 行注释：`# runnable: yes / no`、`# depends: <pkg>`、`# usage: python xxx.py`
   - 所有外部依赖统一列在 `code/part-5/README.md`，按章节分组
-- 跨章引用 `参见 22.3`；跨 Part `(见 Part 3 Ch12)`，**不**复制内容
+- 跨章引用 `参见 23.3`；跨 Part `(见 Part 3 Ch12)`，**不**复制内容
 
 ---
 
@@ -286,17 +286,17 @@ agentkit/
 
 ### 单章完成标准
 
-- 子节齐全，与大纲一致（Ch22: 12 节 / Ch23: 12 节 / Ch24: 12 节 / Ch25: 12 节 / Ch26: 16 节 / Ch27: 6 节）
+- 子节齐全，与大纲一致（Ch23: 12 节 / Ch24: 12 节 / Ch25: 12 节 / Ch26: 12 节 / Ch27: 16 节 / Ch28: 6 节）
 - 含本章目标、小结、本章参考
 - 含至少 1 个 mermaid + 1 个表格
 - 字数在 ±20% 区间内
 - 关键概念全覆盖（每章 6-10 个）
-- 至少 1 个代码示例（Ch27 可豁免）
+- 至少 1 个代码示例（Ch28 可豁免）
 
 ### Part 5 整体验收
 
 - 6 章全部写完
-- 总字数 35-40k（Ch22 6.5k / Ch23 6k / Ch24 6k / Ch25 6k / Ch26 7k / Ch27 2.5k）
+- 总字数 35-40k（Ch23 6.5k / Ch24 6k / Ch25 6k / Ch26 6k / Ch27 7k / Ch28 2.5k）
 - `part-5-agent功能实现/README.md` 含目录与一句话简介
 - `README.md` 出现 Part 5，标记为 "已发布"
 - 所有 mermaid 在 GitHub 渲染无语法错误
@@ -358,8 +358,8 @@ agentkit/
 
 ## 10. 关键决策点（草案级，待用户审阅）
 
-1. **章节数量 6 章：** Ch22-Ch27，Ch27 为收束章。这是 CLAUDE.md 默认的"5-6 章"上限。**不**用 5 章强行合并 Ch27 进 Ch26，避免 Part 5 收尾太突兀。
+1. **章节数量 6 章：** Ch23-Ch28，Ch28 为收束章。这是 CLAUDE.md 默认的"5-6 章"上限。**不**用 5 章强行合并 Ch28 进 Ch27，避免 Part 5 收尾太突兀。
 2. **代码量 14 个 .py：** 比 Part 1-4 都多。这是 Part 5 作为"实现篇"的本质要求——每个核心功能必须有最小可运行示例。**不**为控制篇幅而删代码示例。
 3. **三大 RAG 范式不平均用力：** 主推 Agentic RAG（Part 5 视角下唯一可扩展的形态），Naive / Advanced 作为"前置语境"。**不**展开三种范式的完整对比矩阵。
-4. **协议章（Ch26）重在"能跑"，不在"全规范"：** MCP / A2A / x402 三个协议各给最小可运行示例 + 一张时序图。**不**逐字段讲协议规范；AG-UI 因仍在 draft 只作"协议栈全景"一行点名。
-5. **可复现主流产品特性 70%：** Ch27 给一张表，列出 Claude Code / Pi / Codex 的核心特性并标注 Part 5 是否已实现。**不**写"Claude Code 怎么用"这种产品教程。
+4. **协议章（Ch27）重在"能跑"，不在"全规范"：** MCP / A2A / x402 三个协议各给最小可运行示例 + 一张时序图。**不**逐字段讲协议规范；AG-UI 因仍在 draft 只作"协议栈全景"一行点名。
+5. **可复现主流产品特性 70%：** Ch28 给一张表，列出 Claude Code / Pi / Codex 的核心特性并标注 Part 5 是否已实现。**不**写"Claude Code 怎么用"这种产品教程。
