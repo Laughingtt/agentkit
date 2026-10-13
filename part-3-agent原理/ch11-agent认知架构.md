@@ -449,4 +449,4 @@ sequenceDiagram
 - 想看循环跑起来的样子，直接读代码：[react-lm.github.io（ReAct 项目页）](https://react-lm.github.io)——一个几十行的参考实现，对照 11.6 的图看，比读文字描述快。
 
 ### 视频 / 课程
-- [I-X Seminar: Formulating and Evaluating Language Agents（Shunyu Yao 学术讲座，ReAct 第一作者亲讲）](https://www.youtube.com/watch?v=qmGu9okiICU)——从 ReAct 讲到语言智能体的定义与评测，适合在想动手实现之前先把"什么算 Agent"这件事想清楚。
+- [I-X Seminar: Formulating and Evaluating Language Agents（Shunyu Yao 学术讲座，ReAct 第一作者亲讲）](https://ix.imperial.ac.uk/event/i-x-seminar-series-formulating-and-evaluating-language-agents-with-shunyu-yao)——从语言智能体是什么、怎么评测讲起，一路讲到 CoALA 认知架构框架与三个评测基准（WebShop / InterCode / SWE-Bench），适合在想动手实现之前先把"什么算 Agent"这件事想清楚。
