@@ -34,7 +34,12 @@ def read(store, query, now=None, top_k=3):
 
 
 def forget(store, now, threshold=1e-4):
-    """遗忘：清掉打分低于阈值的老记忆，返回清理条数。"""
+    """遗忘：清掉打分低于阈值的老记忆，返回清理条数。
+
+    注意：threshold=1e-4 只是配 time.time() 秒制时间戳的演示默认值，
+    一条重要度 1.0 的记忆大约 2.8 小时后就会过不了线。真实系统要按自己的
+    时间单位与容量策略重设它。
+    """
     before = len(store)
     store[:] = [it for it in store if score(it, now) >= threshold]
     return before - len(store)
