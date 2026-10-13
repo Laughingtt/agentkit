@@ -1,0 +1,188 @@
+# Plan: Agent原理及实践 — Part 4 Harness 工程
+
+**Date:** 2026-10-13
+**Spec:** `docs/superpowers/specs/2026-09-20-agent-principles-practice-part4-design.md`
+**章节:** Ch17-22（6 章）
+**前置:** Part 3 已发布（commit `bc8cbe2`）
+
+---
+
+## ⚠️ 0. 先读这一节：单位陷阱（Part 3 教训）
+
+**Part 3 的 plan 把 spec §5 的分章区间整体翻倍，四个写手照此成稿，实际产出是预期的一倍。** 根因是「字」这个字在 spec 里指**中文字数**，而验收命令 `wc -m` 数的是**全部字符（含标点、空格、markdown 语法）**，两者大致是 2:1。
+
+**本 plan 的硬规定：**
+
+1. **所有字数一律写 `wc -m`，且必须带单位。** 看到光秃秃的「12k」一律视为无效。
+2. 换算关系：**中文正文口径 = `wc -m` ÷ 2**。spec 里的「6-7k 字」意思是 6000-7000 个中文字，对应 `wc -m` 12000-14000。
+3. **写作时以 `wc -m` 为准，不要为了凑某个数字删内容。** 一·甲 的术语三件套、worked-example、「先演没有它会怎样」起手，本身就吃篇幅——这是 Part 3 用一整轮用户裁定确认过的事实（commit `063ec98`）。
+4. **本章区间比 spec 的朴素估计宽 ~20%**，这是**刻意留的余量**，不是错误。理由同上。
+
+---
+
+## 1. 本 Part 的定位（写给写手看）
+
+Part 3 讲完了「Agent 由哪些零件组成」。Part 4 回答下一个问题：**这些零件装到生产环境里，外面为什么要包一层壳？**
+
+- **本 Part 不讲**：工具调用怎么编码、RAG 怎么实现（→ Part 5）；部署、监控、成本、评测（→ Part 6）；Agent 范式原理（→ Part 3 已讲）。
+- **本 Part 讲**：Agent 核心循环外面那层工程外壳的**七大职责**，以及三个已经标准化的协议（MCP / A2A）与两层硬约束（权限 / 沙箱 / hooks）。
+
+**写作方法（CLAUDE.md §一，不可违背）：**
+
+以 2026 主流 Agent 产品为观察对象，识别**反复出现的设计决策**，抽象成框架无关、模型无关、产品无关的通用概念。
+
+- ❌ 不写「Claude Code 的 Skill 怎么写」「Pi 的 Lazy Skills 是什么」
+- ❌ 正文概念定义位零产品名（Part 3 已用 grep 自检通过，本 Part 继续）
+- ✅ 可以说「三个主流 coding agent CLI 都把 X 放在 Y 位置」
+
+---
+
+## 2. 执行编排（并发上限 3）
+
+机器只有 4G 内存，**同时最多 3 个子代理**。已实测：每个子代理常驻约 310MB，3 个并发约 1GB，留给主会话的余量足够。
+
+```
+Task 0  脚手架 + 章号校验                     串行（主会话亲自做，不派代理）
+Task 1  Ch17 Harness 导览                     串行 ← 冻结术语的唯一一章
+        └─ 产出 .superpowers/sdd/part4-frozen-terms.md
+Task 2  Ch18 MCP  ┐
+Task 3  Ch19 A2A  ├─ 并行 3 个（并发上限）
+Task 4  Ch20 上下文 ┘
+Task 5  Ch21 Hooks/Permissions/Sandbox        串行（依赖 Task 2-4 术语）
+Task 6  Ch22 小结与衔接                        串行（Part 内收束，必须读全部前章）
+Task 7  Part 4 整合与终审                      三路并行（audit-facts / audit-code / audit-consistency）
+```
+
+**每章流程固定为：写 → 易读性审查 → 定点修复。** 审查与写作**必须由不同代理做**，且审查代理**不得信任写手的自述**，要自己复核（Part 3 的 fix 代理每一轮都发现了 brief 未点名的额外缺陷，说明自述不可靠）。
+
+---
+
+## 3. 分章任务与字数区间
+
+> 全部单位 `wc -m`。中文字数 = `wc -m` ÷ 2。
+
+| Task | 章 | 标题 | 区间（`wc -m`） | 对应中文 |
+|---|---|---|---|---|
+| 1 | Ch17 | Harness 导览 | **[10000, 12000]** | 5.0-6.0k |
+| 2 | Ch18 | MCP 协议 | **[14000, 17000]** | 7.0-8.5k |
+| 3 | Ch19 | A2A 协议 | **[12000, 15000]** | 6.0-7.5k |
+| 4 | Ch20 | 上下文工程与记忆 | **[14000, 17000]** | 7.0-8.5k |
+| 5 | Ch21 | Hooks / Permissions / Sandbox | **[14000, 17000]** | 7.0-8.5k |
+| 6 | Ch22 | 小结与衔接 | **[7000, 9000]** | 3.5-4.5k |
+| | | **TOTAL** | **[71000, 87000]** | **35.5-43.5k** |
+
+---
+
+### Task 0：脚手架（主会话亲自执行）
+
+- [ ] 建 `part-4-harness工程/` 与 `code/part-4/`
+- [ ] 建 `part-4-harness工程/README.md`
+- [ ] 建 `code/part-4/README.md`
+- [ ] 校验 spec 跨 Part 章号与冻结表一致（**已验：Part 5 Ch23/24/25/27、Part 6 Ch31 全部正确**）
+
+### Task 1：Ch17 Harness 导览（串行，冻结术语）
+
+- [ ] 写 `part-4-harness工程/ch17-harness导览.md`，10000-12000 `wc -m`
+- [ ] 建 `.superpowers/sdd/part4-frozen-terms.md`：**Ch17 冻结的术语 = 后五章的契约**
+- [ ] 易读性审查（另派代理）
+- [ ] 定点修复
+
+**Ch17 必须讲清的锚点**：裸 LLM 为什么不能当 Agent → harness 是什么 → 主流产品横切共同点 → **七大职责**（工具与权限 / 执行隔离 / 上下文与记忆 / 协议接入 / 生命周期事件 / 会话与状态 / 投递接口）→ 一句话总结。
+
+### Task 2-4：Ch18 / Ch19 / Ch20（并行 3 个）
+
+每个代理只写自己那一章 + 只写 `code/part-4/` 里属于自己的那几个 `.py`，**不得碰其他章文件**（避免并发写冲突）。
+
+| Task | 章 | 独占代码文件 |
+|---|---|---|
+| 2 | Ch18 MCP | `mcp_server_min.py`、`mcp_client_min.py` |
+| 3 | Ch19 A2A | `a2a_server_min.py`、`a2a_client_min.py` |
+| 4 | Ch20 上下文 | `compaction_demo.py` |
+
+### Task 5：Ch21 Hooks / Permissions / Sandbox（串行）
+
+独占代码：`hooks_register.py`、`permission_policy.py`
+
+**这一章的三层防御模型是全 Part 的承重结论**：permission gate（软提示挡不住）→ sandbox（OS 级原语）→ hooks（确定性脚本）。三者**必须分开讲**，否则读者分不清「hook 是事件、permission 是规则、sandbox 是隔离」（spec 附录 B.6）。
+
+### Task 6：Ch22 小结与衔接（串行）
+
+独占代码：无。收束章必须**读完前五章后再写**，且只引不复述。
+
+### Task 7：Part 4 整合与终审（三路并行）
+
+| 流 | 负责 |
+|---|---|
+| audit-facts | 链接连通性 + 论文标题逐字核对 + 数字溯源 + 禁用残留扫描 |
+| audit-code | 8 个 `.py` 逐行**静态**推演，与章节描述对账 |
+| audit-consistency | 章号漂移 / 范围边界 / 产品中立 / 全部移交项处置 |
+
+---
+
+## 4. 全 Part 共同纪律
+
+### 4.1 用户禁令
+
+- **绝不执行任何代码文件。** 不跑 `.py`、不 `python3 x.py`、不 `python3 -c "import"`、不 `py_compile`。所有代码核查只能**人工逐行推演**。「跑一下看看」是明令禁止的。
+- **并发不超过 3 个子代理。**
+
+### 4.2 CLAUDE.md 一·甲（最高优先级，冲突时永远优先）
+
+1. 一个段落新概念 ≤ 3 个；一节要介绍 4 个以上新概念必须显式分小节
+2. **直觉 → 类比 → 视觉 → 公式** 顺序不可颠倒
+3. 同段英文缩写 ≤ 3 个
+4. 一招鲜 + 其余一句话点名
+5. worked-example 在抽象之前
+6. 图/表紧贴它解释的段落
+7. 每章最多 1-2 张 mermaid 架构图 + 多张局部小图
+8. 冗余覆盖：关键概念后续小节首段简短回顾
+9. **表达下限三件套**：术语首现前必须已完成「白话一句话 + 生活类比 + 具体小例子」
+10. **每节先演「没有它会怎样」**
+
+### 4.3 审查范围
+
+**单章审查只审易读性与理解性**：能否一句话转述、术语是否裸用、类比是否到位、有没有吸引力、图是否贴正文。
+
+**事实准确性 / 链接 / 代码运行一律不查**，统一推迟到 Task 7。（用户原话：「再准确的文章，没有读者又有什么意义。」）
+
+### 4.4 跨章与跨 Part 引用
+
+- 章内子节互引：`参见 18.4`
+- 跨 Part 引用：全角 `（见 Part N ChM）`，**不复制内容**
+
+**章号基准（Task 0 顺延后，写新章时必须回此表查，不要凭印象写旧号）：**
+
+| Part | 章号 | 相关章节 |
+|---|---|---|
+| Part 3 Agent 原理 | Ch11-16 | Ch11 四件套 / Ch13 记忆 / Ch14 多 Agent / Ch15 混合系统 |
+| **Part 4 Harness 工程** | **Ch17-22** | **Ch18 MCP、Ch19 A2A、Ch20 上下文工程与记忆、Ch21 Hooks/Permissions/Sandbox** |
+| Part 5 Agent 功能实现 | Ch23-28 | Ch23 Tool Calling 与 RAG、Ch24 记忆与规划、Ch25 多 Agent 协作、Ch26 Code Execution、Ch27 协议集成 |
+| Part 6 工业落地 | Ch29-34 | Ch29 可观测性、Ch30 Evaluation、Ch31 Security 与红队、Ch32 模型路由器与成本控制、Ch33 合规、Ch34 案例与小结 |
+
+### 4.5 Part 3 已交付，Part 4 不要重讲
+
+- Ch10 三层记忆（**按「活多久」分**：短期 / 工作 / 长期）、Ch11 四件套（感知/工作记忆/规划/行动）、Ch11 11.6 三个岔路口（继续 / 换招 / 求助人类）、Ch13 两把尺子（装什么 × 活多久）、Ch13 记忆的攻击面、Ch14 四种拓扑与误差放大、Ch15 混合系统四部件（规则层/检索/小模型/中心 LLM）
+
+**Ch20 与 Ch13 的分工（spec 附录 B.5，必须严守）**：**上下文工程 = 如何裁剪 prompt 给模型**；**记忆系统 = 如何持久化**。Part 4 偏前者，Part 5 Ch24 偏后者。Ch20 讲压缩策略与会话状态，不重复 Ch13 的写/读/忘三问。
+
+### 4.6 产品中立自检
+
+正文零产品名、零私有命名（Claude Code / Cursor / SKILL.md / Aider / Goose / OpenHands / Antigravity / LangGraph / AutoGen / CrewAI / mem0 / Zep 等一律不出现）。交付前 grep 自检。
+
+### 4.7 网络现实（Part 3 实测）
+
+- **可达**：`arxiv.org/abs/<id>`（抓 `citation_title" content="` 取标题）、`api.crossref.org`、`api.github.com`、`raw.githubusercontent.com`、`modelcontextprotocol.io`、WebSearch
+- **不可达**：youtube.com 根域（出口封锁）、部分二手聚合站
+- **ar5iv 陷阱**：核对 2503.13657 这类有多版本的论文**不要用 `ar5iv.labs.arxiv.org`**（缓存停在旧版）。用 `arxiv.org/abs/<id>` 或 `arxiv.org/html/<id>v<n>`。
+
+---
+
+## 5. 完成标志
+
+- [ ] `part-4-harness工程/` 下 Ch17-22 + README 全部就位
+- [ ] `code/part-4/` 下 7 个示意代码 + README 全部就位
+- [ ] TOTAL 在 [71000, 87000] `wc -m`，每章在各自区间
+- [ ] 每章均有独立的易读性审查 report
+- [ ] Task 7 终审 report 落盘，三路 audit 全部处置完毕
+- [ ] 顶层 README 标记 Part 4 ✅ 已发布
+- [ ] 全部 commit 已 push，工作区干净
