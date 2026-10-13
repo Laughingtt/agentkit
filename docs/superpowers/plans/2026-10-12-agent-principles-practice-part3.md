@@ -413,6 +413,7 @@ echo "术语裸用抽查（这些词首次出现处必须在前 200 字内有三
 ```
 
 Expected: `wc -m` ∈ [20000, 24000]；`^## ` = 12；mermaid ∈ [2,3]。
+> **2026-10-12 口径更正**：本 plan 各章区间系把 spec §5 误整体翻倍。实测 Ch11 = 21144，合规；Part 3 总字数按用户裁定改为 **~111k `wc -m`**，不再以 52-60k 为验收线。
 
 - [ ] **Step 12：派发易读性审查（readability-only），写 report，commit**
 
@@ -554,7 +555,7 @@ grep -c "^## " "part-3-agent原理/ch12-三大范式.md" && grep -c '```mermaid'
 grep -n "56%\|3\.6x\|3\.6 倍\|减少 ~40%" "part-3-agent原理/ch12-三大范式.md"
 ```
 
-Expected: 章 `wc -m` ∈ [24000, 28000]；`^## ` = 11；mermaid = 2；**最后一个 grep 必须无输出**（禁用数字零残留）。
+Expected: 章 `wc -m` ∈ [24000, 28000]（实测 25967 ✓）；`^## ` = 11；mermaid = 2；**最后一个 grep 必须无输出**（禁用数字零残留）。
 
 - [ ] **Step 10：派发易读性审查 `review-ch12`，定点修复，commit**
 
@@ -666,7 +667,7 @@ cd /data/projects/agentkit && wc -m "part-3-agent原理/ch13-记忆机制.md" &&
 grep -c '```mermaid' "part-3-agent原理/ch13-记忆机制.md"
 ```
 
-Expected: `wc -m` ∈ [18000, 22000]；mermaid = 1。
+Expected: `wc -m` ∈ [18000, 22000]（实测 19573 ✓）；mermaid = 1。
 
 - [ ] **Step 10：Commit**
 
@@ -761,7 +762,7 @@ cd /data/projects/agentkit && wc -m "part-3-agent原理/ch14-多agent协作.md" 
 echo "禁用引用（必须无输出）:" && grep -n "2503\.09957\|2509\.15307" "part-3-agent原理/ch14-多agent协作.md"
 ```
 
-Expected: `wc -m` ∈ [18000, 22000]；禁用 ID 零命中。
+Expected: `wc -m` ∈ [18000, 22000]（实测 19244 ✓）；禁用 ID 零命中。
 
 - [ ] **Step 10：Commit**
 
@@ -864,7 +865,7 @@ cd /data/projects/agentkit && wc -m "part-3-agent原理/ch15-混合系统.md" &&
 grep -c '```mermaid' "part-3-agent原理/ch15-混合系统.md"
 ```
 
-Expected: `wc -m` ∈ [18000, 22000]；mermaid = 2（`graph TD` + `stateDiagram-v2`）。
+Expected: `wc -m` ∈ [18000, 22000]（实测 18050 ✓）；mermaid = 2（`graph TD` + `stateDiagram-v2`）。
 
 - [ ] **Step 10：Commit**
 
@@ -914,7 +915,7 @@ git commit -m "Add Ch15: 混合系统（规则+检索+小模型+中心 LLM）+ c
 cd /data/projects/agentkit && wc -m "part-3-agent原理/ch16-小结与衔接.md"
 ```
 
-Expected: `wc -m` ∈ [6000, 8000]。
+Expected: `wc -m` ∈ [6000, 9000]（原 [6000,8000]，总口径放宽后给收束章留余量）。
 
 ```bash
 git add "part-3-agent原理/ch16-小结与衔接.md"
