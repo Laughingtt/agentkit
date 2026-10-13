@@ -12,7 +12,7 @@
 | `mcp_client_min.py` | Ch18 | 最小 MCP client：列出工具 + 调用一次 |
 | `a2a_server_min.py` | Ch19 | 最小 A2A server：Agent Card + 任务执行器 |
 | `a2a_client_min.py` | Ch19 | 最小 A2A client：拉卡片 + 发任务 + 收结果 |
-| `compaction_demo.py` | Ch20 | 上下文压缩：四种策略的骨架（示意） |
+| `compaction_demo.py` | Ch20 | 上下文压缩：四种策略共用同一骨架，只有「处理被丢掉的那部分」那一行不同 |
 | `hooks_register.py` | Ch21 | 钩子注册：生命周期事件上的确定性回调 |
 | `permission_policy.py` | Ch21 | 权限策略：allow / ask / deny 三档判定 |
 
