@@ -7,6 +7,7 @@
 
 | 文件 | 对应章节 | 作用 |
 |---|---|---|
+| `harness_loop.py` | Ch17 | Agent 循环骨架：全 Part 4 的那圈 while，行尾标注七项职责 |
 | `mcp_server_min.py` | Ch18 | 最小 MCP server：几个工具 + stdio 启动 |
 | `mcp_client_min.py` | Ch18 | 最小 MCP client：列出工具 + 调用一次 |
 | `a2a_server_min.py` | Ch19 | 最小 A2A server：Agent Card + 任务执行器 |
