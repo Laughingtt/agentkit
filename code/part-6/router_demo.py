@@ -57,7 +57,7 @@ def classify(text: str) -> tuple[str, int, list[str]]:
 class SessionPinner:
     """会话粘滞：一个会话里第一次定下档位，后面尽量不动。
 
-    理由不是「一致性好」，而是**省钱**：换模型等于前缀缓存作废（32.4.3）。"""
+    理由不是「一致性好」，而是**省钱**：换模型等于前缀缓存作废（32.3.3）。"""
     def __init__(self) -> None:
         self._pinned: dict[str, str] = {}
 
