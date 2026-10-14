@@ -364,7 +364,7 @@ graph LR
 | **SwiGLU** | 比 ReLU 更聪明的"门控"激活函数——输入自己决定要不要激活 | LLaMA / PaLM |
 | **GQA** | 多头共享 KV——节省显存，质量接近 MHA | LLaMA-2/3 / Qwen |
 
-细节、对比、权衡留到 Part 2 第 6 章展开。本节只要形成"现代 LLM 标准件"的心智模型：**MoE** 让模型大而不慢、**RMSNorm** 让训练更快、**SwiGLU** 让表达更准、**GQA** 让推理更省。
+本节只要形成"现代 LLM 标准件"的心智模型：**MoE** 让模型大而不慢、**RMSNorm** 让训练更快、**SwiGLU** 让表达更准、**GQA** 让推理更省。**RMSNorm / SwiGLU / RoPE 等各自"替换掉了什么"，见 Part 2 Ch7 §7.8 的一张点名表；GQA 为什么能省，见 Ch7 §7.6；MoE 的完整拆解在 Ch7 §7.2。**
 
 ## 本章小结
 
