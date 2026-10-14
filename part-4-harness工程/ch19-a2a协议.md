@@ -339,11 +339,16 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(raw)
 
     def not_found(self):
-        # 这个 server 走 HTTP+JSON 绑定，所以错误响应用 problem+json
-        # （规范 §11）。若换成 JSON-RPC 绑定，这里要改成
+        # 这个 server 走 HTTP+JSON 绑定，规范 §11.6 要的错误体是
+        # google.rpc.Status 的 JSON 写法：外层一个 error，里面装 code /
+        # status / message / details 四样。下面省掉了 details 只留三样，
+        # 是删过的示意，不是完整实现。
+        # ⚠️ v0.3 时代这里用的是 application/problem+json（那种 {"title":...,
+        # "status":404} 的形状）——v1.0 已经改掉了，照旧教程抄会抄到过期格式。
+        # 若换成 JSON-RPC 绑定（§9.5），错误体要改成
         # {"jsonrpc":"2.0","id":rid,"error":{"code":-32601,"message":...}}，
         # 且 HTTP 状态码仍是 200。见 Part 5 Ch27 的 27.5.3。
-        self.reply(404, {"title": "Not Found", "status": 404})
+        self.reply(404, {"error": {"code": 404, "status": "NOT_FOUND", "message": "Not Found"}})
 
     def do_GET(self):
         path = self.path.split("?")[0]

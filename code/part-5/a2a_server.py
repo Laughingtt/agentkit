@@ -2,7 +2,7 @@
 # depends: 无（Python 3.10+ 标准库）
 # usage: python a2a_server.py
 """
-最小 A2A 服务端：一份自述页 + 三个 JSON-RPC 方法。
+最小 A2A 服务端：一份自述页 + 两个 JSON-RPC 方法（SendMessage / GetTask）。
 
 协议依据：A2A v1.0。
 自述页路径 /.well-known/agent-card.json、任务状态值取自 v1.0 规范。

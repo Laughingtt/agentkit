@@ -45,7 +45,7 @@ def payment_requirements() -> dict:
         "resource": f"{BASE}/search",
         "accepts": [
             {
-                "scheme": "exact",           # 付固定额；协议预留了按用量付的 upto
+                "scheme": "exact",           # 付固定额；另一种 upto 只授权上限、按实际用掉多少结算
                 "network": "eip155:84532",  # 哪条链。scheme 与 network 必须成对支持
                 "maxAmountRequired": PRICE,
                 "description": "一次档案检索",
