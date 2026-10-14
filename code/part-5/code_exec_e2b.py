@@ -24,8 +24,9 @@ CODE_TIMEOUT_SECONDS = 60      # 单次执行的墙钟超时
 class ExecResult:
     """run_python 的返回值。
 
-    成功有 ok、失败有 error，而 stdout / stderr / artifacts 三样在任何情况下都存在，
-    所以模型不必先猜"这次会返回什么"再决定怎么读。固定形状比省几个字段重要。
+    四个字段一个都不缺：成功靠 ok=True 表示，失败靠 ok=False 加一段
+    stderr 表示，而不是换成另一种返回结构。所以模型不必先猜"这次会返回什么"
+    再决定怎么读。固定形状比省几个字段重要。
     """
 
     ok: bool
