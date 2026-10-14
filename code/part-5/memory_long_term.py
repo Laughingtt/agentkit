@@ -120,10 +120,22 @@ class RelationalLayer:
 
     @staticmethod
     def key(r: MemoryRecord) -> tuple[str, str, str]:
-        """唯一约束：同一条事实只有一行。
+        """唯一约束：定出「这是哪个槽位的那一行」。
 
-        注意 key 里没有时间——所以「上限 5000」和「上限 3000」天然撞键，
-        这正是时序层要处理的冲突，别试图用改 key 的办法绕开。
+        带谓词时，key 不含 object——槽位由 (owner, subject, predicate)
+        认，object 变一次就是同一槽位的新值，于是 upsert 会给旧行关上
+        valid_from，这是「同一条事实改了说法」的更新。
+
+        不带谓词时（三元组），反过来把 object 放进 key：这样
+        「上限 5000」和「上限 3000」落在两个不同的行上，并存而不互相覆盖。
+        这不是 bug——正文说得很清楚，矛盾不等于更新：它们是同一个槽位在
+        不同时间的两个值，要靠时序层一起留着。**别为了「省一行」把 object
+        从三元组的 key 里拿掉**，那会让新值默默盖掉旧值，正是这一层要防的
+        「Agent 引用了三个月前作废的规定」。
+
+        代价要说清楚：三元组是「主体只有这一个属性」的假设。
+        同一个 subject 若要挂多个不带谓词的三元组（张三 会跑步 / 张三 会游泳），
+        它们会互相覆盖——这种场景请补上 predicate。
         """
         return (r.owner, r.subject, r.object) if r.predicate == "" \
             else (r.owner, r.subject, r.predicate)
