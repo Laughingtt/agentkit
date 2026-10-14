@@ -374,6 +374,21 @@ MCP 的原语从最早的六项一路减到三项。这个过程本身是个很�
 
 光看协议名字没用，下面两份代码把 18.3 到 18.6 串起来跑一遍。完整文件在 `code/part-4/mcp_server_min.py` 与 `code/part-4/mcp_client_min.py`，下面只节选最能说明问题的部分。
 
+两份文件读之前先摆结构，一眼看清楚"谁主动找谁"——**MCP 里 client 是拉起 server 的那一方，这个方向很多人在看协议图时会看反**：
+
+```mermaid
+graph TD
+    A["StdioClient<br/>客户端类"] -->|"启动时拉起"| B["mcp_server_min.py<br/>作为子进程"]
+    A -->|"一行 JSON 请求<br/>走 stdin"| B
+    B -->|"一行 JSON 响应<br/>走 stdout"| A
+    B --> H["handle 分派"]
+    H --> M1["server/discover"]
+    H --> M2["笔记工具三个"]
+    H --> M3["未知方法<br/>回标准错误码"]
+```
+
+**看图上那个不对称的形状**：箭头是双向的，但**控制权在客户端**——是它 `subprocess` 起 server，server 起来之后只是被动应答。18.4 讲的"能力发现"就是第一条 `server/discover`；18.6 讲的三种原语是那三个笔记方法。**server 端所有的活都发生在 `handle` 这一个函数里**，它做的事只有一件：看 `method` 是什么，转给对应的 `call_*`。
+
 **server 端——分派逻辑。** 注意每次返回都带 `resultType`（它的另一种取值见 18.7.3），每次未知方法都回标准错误码：
 
 ```python
