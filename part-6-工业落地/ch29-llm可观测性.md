@@ -274,4 +274,5 @@ def handle_user_request(client, question: str) -> str:
 
 ### 视频 / 课程
 
-- [OpenTelemetry 官方 Workshop](https://github.com/open-telemetry/opentelemetry-workshop)——Hands-on 形式练习埋点与查询，适合读完本章后动手一遍
+- [OpenTelemetry Demo（官方可运行样例）](https://opentelemetry.io/docs/demo/)——一套跑得起来的完整应用，埋点、采集、存储、后端查询四段都接好了；读完本章想看「一条 trace 从头到尾长什么样」时照着它跑一遍最快
+- [OpenTelemetry Demo 架构说明](https://opentelemetry.io/docs/demo/architecture/)——上一条的配套文档，讲清上面那个 Demo 每一段用哪个组件

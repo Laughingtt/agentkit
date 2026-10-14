@@ -839,5 +839,5 @@ def 留一条痕(event):
 ### 推荐教程 / 参考页
 
 - [Seccomp BPF —— Linux 内核官方文档](https://www.kernel.org/doc/html/latest/userspace-api/seccomp_filter.html)——想深挖"只放行四十来个调用、其余一律拒绝"这套做法时的入口，也是 21.4.5"默认拒绝"在系统调用层的同一个思路。
-- [containers(7) —— Linux 手册页](https://man7.org/linux/man-pages/man7/containers.7.html)——想看一个隔离环境最终被拆成哪些可配置项时的索引页，21.4.1 那张表的每一行都能在这里找到对应的 man 页入口。
+- [namespaces(7) —— Linux 手册页](https://man7.org/linux/man-pages/man7/namespaces.7.html)——21.4.1 那张表第一行「命名空间」的权威索引，七种命名空间逐个列出各自管什么、挂载参数在哪儿改；[capabilities(7)](https://man7.org/linux/man-pages/man7/capabilities.7.html) 对应最后一行「能力 / 权限位」。中间三行（资源配额、系统调用过滤、换根）分别落在 `setrlimit(2)`、`seccomp(2)`、`chroot(2)` 上，没有一个单页能把五项都列齐
 - [pivot_root(2) —— Linux 手册页](https://man7.org/linux/man-pages/man2/pivot_root.2.html)——"它能摸哪些文件"那一层；chroot(1) 单用为什么不够，那两页上有说明。
