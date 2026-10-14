@@ -102,7 +102,7 @@ A2A 项目在 v1.0 发布公告里，把它和 MCP 的关系写成一句话：
 
 > **MCP inside agents, A2A between agents.**（MCP 在 Agent 内部，A2A 在 Agent 之间。）
 
-治理方面：A2A 于 2025 年 6 月由 Linux Foundation 托管，2026 年 8 月并入其旗下的 Agentic AI 基金会（AAIF）。**这些数字都在变，引用请以官网当日页面为准。**
+治理方面有两跳，别读成一次：A2A 于 **2025 年 6 月**由 Linux Foundation 托管（Google 捐赠）；**2026 年 8 月 17 日**又被接受为该基金会旗下 Agentic AI 基金会（AAIF）的 Growth Stage 项目，与 MCP 同处一个屋檐下。**第二跳是治理归属的下沉，不是第二次捐赠**——所以协议版本号没有因此变化，v1.0.1 至今仍是当前修订，仓库也没挪地方，零迁移成本。**这些数字都在变，引用请以官网当日页面为准。**
 
 ## 19.3 Agent Card：一个 Agent 怎么介绍自己
 
@@ -514,6 +514,7 @@ harness 第 4 项职责「**协议接入**」的白话是"用公开协议把外�
 - [A2A v1.0.0 规范全文](https://a2a-protocol.org/v1.0.0/specification/)——Agent Card 路径（§8.2）、任务状态（§4.1.3）、AgentCard 与 AgentSkill 字段（§4.4）、HTTP 绑定路径（§5.3）均引自此页。
 - [What's New in A2A Protocol v1.0](https://github.com/a2aproject/A2A/blob/v1.0.1/docs/whats-new-v1.md)——v0.3 到 v1.0 的逐项变更。
 - [A2A v1.0 发布公告](https://github.com/a2aproject/A2A/blob/v1.0.1/docs/announcing-1.0.md)——"MCP inside agents, A2A between agents" 一句的出处。
+- [A2A joins AAIF's open agentic stack（AAIF 官方博客）](https://aaif.io/blog/a2a-joins-aaif)——19.2 末尾「2026-08-17 并入 AAIF、但协议版本没变」这两条的出处。
 
 ### 推荐博客 / 教程
 
