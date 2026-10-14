@@ -447,7 +447,7 @@ Ch29 已经建立的追踪能力，在这一章变成了安全资产。**如果�
 
 - [Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection](https://arxiv.org/abs/2302.12173)
 - [Universal and Transferable Adversarial Attacks on Aligned Language Models](https://arxiv.org/abs/2307.15043)
-- [Igniting Fuse: Breaking Servers via Prompt Injection into LLM-Integrated Applications](https://arxiv.org/abs/2308.15022)
+- [InjecAgent: Benchmarking Indirect Prompt Injections in Tool-Integrated Large Language Model Agents](https://arxiv.org/abs/2403.02691)——31.3.2 讲的「工具返回的内容就是攻击面」，这篇把它做成了一套可复现的基准
 
 ### 推荐博客 / 教程
 
