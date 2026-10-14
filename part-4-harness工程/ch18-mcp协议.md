@@ -121,7 +121,7 @@ MCP 里只有三个角色，不多不少：
 ```mermaid
 sequenceDiagram
     participant U as 用户
-    participant H as Host（harness）
+    participant H as Host
     participant M as 模型
     participant C as Client
     participant S as Server
@@ -308,7 +308,9 @@ MCP 的原语从最早的六项一路减到三项。这个过程本身是个很�
 
 ### 18.7.1 三项被标记弃用
 
-**先纠正一个最常见的说法。** 网上（包括不少二手资料）会写"Roots / Sampling / Logging 已被移除"——**这是错的。** 规范把它们登记为**弃用（Deprecated）**，而不是移除（Removed）。2026-07-28 版的弃用登记页里，"已被移除"那一栏明明白白写着**目前还没有任何功能走到这一步**。
+**先纠正一个最常见的说法。** 网上（包括不少二手资料）会写"Roots / Sampling / Logging 已被移除"——**这是错的。** 规范把它们登记为**弃用（Deprecated）**，而不是移除（Removed）。2026-07-28 版的弃用登记页里，"已被移除"那一栏明明白白写着**在这套生命周期规矩之下，目前还没有任何功能走到这一步**。
+
+（补一句免得读反：这句话只管 SEP-2596 这套**新规矩管过的功能**。同一版的 SEP-2575 是**另一次决定**，它确实当场移除了 `initialize`、`ping` 这样的老方法——那叫"按提案直接下掉"，不叫"走完弃用流程再下掉"。见 18.7.3。）
 
 弃用和移除的区别，用一句话讲清：
 
@@ -344,15 +346,15 @@ MCP 的原语从最早的六项一路减到三项。这个过程本身是个很�
 这两层可以这样分：**"请求类型"是一扇门的名字**（`roots/list` 这扇门），**"载荷类型"是门里面那张表格**。门拆了，名字就没人喊了；表格本身印得好好地放在别处，还有人拿着用。把上面的机制画出来就是：
 
 ```text
-旧：client ──"roots/list？"──▶ server        （要问 client，得 server 主动开口）
-                              ✗ 旧版没有这条反向通道
-新：client ──"我要建一张工单"──▶ server
-                                └── "我还需要：这张单归谁管"（特殊结果）
-    client ──"这张单归张三管"──▶ server        （重发同一个请求，把答案带上）
-                                └── "工单 #4821 已创建"
+旧：client ──"roots/list？"──▶ server       （要问 client，得 server 主动开口）
+                             ✗ 旧版没有这条反向通道
+新：client ──"我要建一张新工单"──▶ server
+                                   └── "我还需要：这张单归谁管"（特殊结果）
+再：client ──"这张工单归张三管"──▶ server   （重发同一个请求，把答案带上）
+                                   └── "工单 #4821 已创建"
 ```
 
-另外两项的处理要更干脆——它们是**被直接移除**，不是弃用：`ping`（心跳）和 `logging/setLevel`（设日志级别）。日志级别改为每条请求在 `_meta` 里带一个字段来声明。
+另外几项的处理要更干脆——它们是**被直接移除**（Removed），不是弃用：`ping`（心跳）、`logging/setLevel`（设日志级别）和 `notifications/roots/list_changed`（通知客户端目录变了）。日志级别改为每条请求在 `_meta` 里带一个字段来声明；目录变更通知则没有替代品，Roots 整个弃用之后它也就没有存在意义了。
 
 最后一条也不一样：**HTTP+SSE 传输的最早移除日期不是 2027-07-28**，而是"相关规范正式生效后三个月"。同一张弃用表里，每一行的时钟都是单独算的——这本身就是"看文档先看日期"的最好例证。
 
@@ -383,13 +385,13 @@ graph TD
     B -->|"一行 JSON 响应<br/>走 stdout"| A
     B --> H["handle 分派"]
     H --> M1["server/discover"]
-    H --> M2["笔记工具三个"]
+    H --> M2["三个笔记工具"]
     H --> M3["未知方法<br/>回标准错误码"]
 ```
 
-**看图上那个不对称的形状**：箭头是双向的，但**控制权在客户端**——是它 `subprocess` 起 server，server 起来之后只是被动应答。18.4 讲的"能力发现"就是第一条 `server/discover`；18.6 讲的三种原语是那三个笔记方法。**server 端所有的活都发生在 `handle` 这一个函数里**，它做的事只有一件：看 `method` 是什么，转给对应的 `call_*`。
+**看图上那个不对称的形状**：箭头是双向的，但**控制权在客户端**——是它 `subprocess` 起 server，server 起来之后只是被动应答。18.6 讲的"能力发现"就是第一条 `server/discover`；18.4 讲的那三种原语，在这里落成了那三个笔记方法。**server 端所有的活都发生在 `handle` 这一个函数里**，它做的事只有一件：看 `method` 是什么，转给对应的 `call_*`。
 
-**server 端——分派逻辑。** 注意每次返回都带 `resultType`（它的另一种取值见 18.7.3），每次未知方法都回标准错误码：
+**server 端——分派逻辑。** 摘自 `code/part-4/mcp_server_min.py`，原样照抄。注意每次返回都带 `resultType`（它的另一种取值见 18.7.3），每次未知方法都回标准错误码：
 
 ```python
 def handle(req):
@@ -437,7 +439,7 @@ def handle(req):
     }
 ```
 
-**client 端——发一条请求。** 每一行请求都自带版本、身份、能力，这是 18.6.2 那条规则在代码里的样子：
+**client 端——发一条请求。** 摘自 `code/part-4/mcp_client_min.py` 的 `StdioClient` 类，同样原样照抄。每一行请求都自带版本、身份、能力，这是 18.6.2 那条规则在代码里的样子：
 
 ```python
     def request(self, method, params=None):
@@ -475,7 +477,7 @@ def handle(req):
 - 一次调用里模型只出现在两行；协议负责的那一段（消息怎么送、结果怎么翻译）正是**职责四（协议接入）** 的辖区。
 - 2026-07-28 版的活跃原语是**三项**，按"谁决定何时用"分：**Tools 由模型决定、Resources 由应用决定、Prompts 由用户决定**。工具与资源的真正差别不是可不可写，而是**模型能不能主动点名要它**——这决定了宿主要不要在它跑之前过权限判定。
 - 握手被移除，`server/discover` 取而代之；每条请求在 `_meta` 里自报版本、身份与能力。准确的说法是"**协议不再隐式维护会话，状态改由显式 handle 承载**"，不是"什么都不要记"。
-- **弃用 ≠ 移除。** Roots / Sampling / Logging 目前仍在规范内，最早移除日期是 2027-07-28 及以后的第一个修订版。同一批里 `ping` 与 `logging/setLevel` 才是**被直接移除**。看任何协议文档，先确认日期和状态分区。
+- **弃用 ≠ 移除。** Roots / Sampling / Logging 目前仍在规范内，最早移除日期是 2027-07-28 及以后的第一个修订版。而 `ping`、`logging/setLevel` 这些是**当场就被移除**的——它们走的是另一条路，不受那套弃用流程约束。看任何协议文档，先确认日期和状态分区。
 
 **与 Ch19 的衔接。** MCP 解决的是"Agent 怎么接**工具**"。但 Agent 之间要互相调用时，对方不是一个函数，而是 Ch17 17.4.4 末尾说的那种**会自己规划、自己循环、中途可能要问人的独立程序**——本章讲的三角色与三原语的模型在它身上都不适用，需要另一套约定。下一章讲那一套：一句话分工是 **MCP 管 Agent 对工具，A2A 管 Agent 对 Agent**。
 
@@ -487,7 +489,7 @@ def handle(req):
 
 - [MCP 规范首页（2026-07-28 版）](https://modelcontextprotocol.io/specification/2026-07-28/)——全章的版本锚点。
 - [Architecture（架构）](https://modelcontextprotocol.io/specification/2026-07-28/architecture)——Host / Client / Server 三角色、无状态设计原则、能力协商。18.3 与 18.6 的主要出处。
-- [Key Changes（本版改了什么）](https://modelcontextprotocol.io/specification/2026-07-28/changelog)——18.6 与 18.7 的事实依据，逐条列出了移除 `initialize`、`Mcp-Session-Id`、`ping`、`logging/setLevel`，以及弃用三项原语。
+- [Key Changes（本版改了什么）](https://modelcontextprotocol.io/specification/2026-07-28/changelog)——18.6 与 18.7 的事实依据，逐条列出了移除 `initialize`、`notifications/initialized`、`Mcp-Session-Id`、`ping`、`logging/setLevel`、`notifications/roots/list_changed`，以及弃用三项原语。
 - [Deprecated Features（弃用与移除登记）](https://modelcontextprotocol.io/specification/2026-07-28/deprecated)——18.7.1 与 18.7.2 的直接出处，含每一项的最早移除日期与迁移路径。
 
 ### 推荐教程 / 参考页
