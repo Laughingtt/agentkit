@@ -6,7 +6,10 @@
 # 真要跑起来需要两样东西：
 #   1. 环境变量 ANTHROPIC_API_KEY
 #   2. pip install anthropic
-# 另外 23.5 讲并行调用时，本文件末尾会启用 parallel_tool_use=False 做对照。
+# 另外 23.5 讲并行调用时，要关掉并行得写
+#   tool_choice={"type": "auto", "disable_parallel_tool_use": True}
+# （它是 tool_choice 对象里的一个布尔字段，不在请求体顶层；
+#   OpenAI 那一路是顶层一个 parallel_tool_calls=False。23.3.2 那张对照表的最后一行就是这件事。）
 
 import json
 import os
