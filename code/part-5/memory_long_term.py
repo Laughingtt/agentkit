@@ -51,9 +51,9 @@ class MemoryStore(Protocol):
     抽出这层是因为：换掉向量库不该改调用方代码——这和 Ch23 讲
     JSON Schema 作为「契约」是同一个思路的另一处应用。
     """
-    def upsert(self, record: MemoryRecord) -> str: ...            # 写入或更新
-    def search(self, query: str, top_k: int) -> list[MemoryRecord]: ...     # 语义
-    def by_subject(self, subject: str, include_expired: bool = False) -> list[MemoryRecord]: ...  # 精确
+    def upsert(self, record: MemoryRecord) -> str: ...                                             # 写入或更新
+    def search(self, query: str, top_k: int) -> list[MemoryRecord]: ...                            # 语义
+    def by_subject(self, subject: str, include_expired: bool = False) -> list[MemoryRecord]: ...   # 精确
 
 
 def _cosine(a: tuple[float, ...], b: tuple[float, ...]) -> float:
