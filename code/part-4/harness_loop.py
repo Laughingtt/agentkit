@@ -9,14 +9,14 @@
 while not done:
     resp = call_model(memory.pack(budget), registry.list_tools())
     for call in parse(resp):                          # 把模型说的话翻译成一个动作
-        if not policy.allow(call): ask_human(call)    # 这一步得先问人吗？      〔职责一〕
+        if not policy.allow(call):                    # 这一步得先问人吗？      〔职责一〕
+            if not ask_human(call): continue          # 人不点头就跳过，绝不执行   〔职责七〕
         result = sandbox.run(call)                    # 在受限环境里跑          〔职责二〕
         hooks.fire("post_tool", call)                 # 跑完做收尾              〔职责五〕
         memory.append(result)                         # 把结果记进上下文        〔职责三〕
 
-# 另外三项没法单独占一行，它们藏在上面某一步里：
+# 另外两项没法单独占一行，它们藏在上面某一步里：
 #   工具清单 registry.list_tools() 从协议登记而来            —— 职责四 协议接入
-#   ask_human 之后，人怎么把"同意/拒绝"递回外壳              —— 职责七 投递接口
 #   hooks.fire 顺手留下的那段执行记录，就是黑匣子              —— 职责六 会话与状态
 #
 # 注意循环里没有一行是"模型"。模型只在 call_model 里出现一次，

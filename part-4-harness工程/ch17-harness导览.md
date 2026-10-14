@@ -117,13 +117,16 @@ graph TD
 while not done:
     resp = call_model(memory.pack(budget), registry.list_tools())
     for call in parse(resp):                          # 把模型说的话翻译成一个动作
-        if not policy.allow(call): ask_human(call)    # 这一步得先问人吗？      〔职责一〕
+        if not policy.allow(call):                    # 这一步得先问人吗？      〔职责一〕
+            if not ask_human(call): continue          # 人不点头就跳过，绝不执行   〔职责七〕
         result = sandbox.run(call)                    # 在受限环境里跑          〔职责二〕
         hooks.fire("post_tool", call)                 # 跑完做收尾              〔职责五〕
         memory.append(result)                         # 把结果记进上下文        〔职责三〕
 ```
 
-还有三样东西也在这几行里，只是没法单独占一行：工具清单是从协议登记来的（职责四），`ask_human` 之后人怎么把同意或拒绝递回外壳，是投递接口的事（职责七），而 `hooks.fire` 顺手留下的那段执行记录，是黑匣子（职责六）。
+还有两样东西也在这几行里，只是没法单独占一行：工具清单是从协议登记来的（职责四），而 `hooks.fire` 顺手留下的那段执行记录，是黑匣子（职责六）。至于人点完头之后"同意/拒绝"从哪个口子递回来——终端按键、网页按钮、批处理里的预授权——那是投递接口的事（职责七，见 17.4.7）。
+
+⚠️ 那行 `continue` 别当成可有可无的细节。**它是"人点拒绝"这件事唯一的出口**：少了它，`ask_human` 的返回值没人接，外壳会径直执行下一行——模型要删掉整个构建目录，人点了拒绝，命令照样跑起来了。记住这条：**"这个函数被调用了"和"它的每一种结果都有地方去"是两件事。**
 
 **harness 不是模型的一部分，而是模型之外的那部分。** 换模型，这一圈代码一行都不用改；换外壳，模型权重也不用动。
 
@@ -166,6 +169,12 @@ sequenceDiagram
     else 需要人点头
         H->>I: 请求授权
         U-->>H: 同意 / 拒绝
+        alt 人点头
+            H->>S: 在受限环境里执行
+            S-->>H: 真实结果
+        else 人拒绝
+            H->>H: 跳过这一条，记一笔"被拒"
+        end
     end
     H->>H: 结果回填上下文 + 写留痕
     H-->>I: 渲染给人看

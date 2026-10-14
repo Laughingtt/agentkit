@@ -6,7 +6,6 @@ Python 3.9+ 标准库。先启动 a2a_server_min.py，再 python3 a2a_client_min
 """
 
 import json
-import uuid
 import urllib.request
 
 BASE, VERSION = "http://127.0.0.1:9000", "1.0"
@@ -30,19 +29,16 @@ def request(method, path, body=None):
 
 
 def discover():
-    """第 1 步：先读自述页，看它会什么、从哪儿接活，别急着派。"""
+    """第 1 步：先读自述页，看它会什么，别急着派。"""
     card = request("GET", "/.well-known/agent-card.json")
     print("找到 Agent：{}（{}）".format(card["name"], card["version"]))
     for skill in card["skills"]:
         print("  技能：{} — {}".format(skill["name"], skill["description"]))
-    for i in card["supportedInterfaces"]:
-        print("  接口：{} {}（协议 {}）".format(
-            i["protocolBinding"], i["url"], i["protocolVersion"]))
 
 
 def send(text, task_id=None):
     """带 task_id 就是"接着那件事说"，不带就是"新开一件事"。"""
-    msg = {"role": "ROLE_USER", "parts": [{"text": text}], "messageId": str(uuid.uuid4())}
+    msg = {"role": "ROLE_USER", "parts": [{"text": text}]}
     if task_id:
         msg["taskId"] = task_id
     return request("POST", "/message:send", {"message": msg})["task"]

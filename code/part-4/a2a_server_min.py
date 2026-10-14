@@ -6,7 +6,6 @@ Python 3.9+ 标准库。运行：python3 a2a_server_min.py
 """
 
 import json
-import re
 import uuid
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, HTTPServer
@@ -15,8 +14,8 @@ BASE, VERSION = "http://127.0.0.1:9000", "1.0"
 MEDIA = "application/a2a+json"
 
 # 任务表。真实系统该落库——进度要能被后来的人查回来，这正是第六项职责要的留痕。
-# LOG 是教学用流水账，它不是协议字段：协议只管状态怎么变，不管你怎么记。
-TASKS, LOG = {}, []
+# 它不是协议字段：协议只规定状态怎么变，不规定你怎么记。
+TASKS = {}
 
 
 def now():
@@ -33,17 +32,15 @@ def agent_card():
         "supportedInterfaces": [
             {"url": BASE, "protocolBinding": "HTTP+JSON", "protocolVersion": VERSION}],
         "capabilities": {"streaming": False, "pushNotifications": False},
-        "defaultInputModes": ["text/plain"],
         "skills": [{
             "id": "archive_lookup", "name": "复杂档案检索",
-            "description": "给定档案主题与年份范围，检索并汇总成结构化结论。",
-            "tags": ["retrieval", "research"]}],
+            "description": "给定档案主题与年份范围，检索并汇总成结构化结论。"}],
     }
 
 
 def start_task():
     """接单：先返回"处理中"，干到一半才可能回头问人。"""
-    task = {"id": str(uuid.uuid4()), "contextId": str(uuid.uuid4()),
+    task = {"id": str(uuid.uuid4()),
             "status": {"state": "TASK_STATE_WORKING", "timestamp": now()}}
     TASKS[task["id"]] = task
     return task
@@ -53,7 +50,6 @@ def ask_back(task, question):
     """停在"等你回话"上——这正是 A2A 与工具调用的分水岭。"""
     task["status"] = {"state": "TASK_STATE_INPUT_REQUIRED", "timestamp": now(),
                       "message": {"role": "ROLE_AGENT", "parts": [{"text": question}]}}
-    LOG.append({"task": task["id"], "event": "input-required"})
 
 
 def deliver(task, answer):
@@ -61,7 +57,6 @@ def deliver(task, answer):
     task["status"] = {"state": "TASK_STATE_COMPLETED", "timestamp": now()}
     task["artifacts"] = [{"artifactId": str(uuid.uuid4()), "name": "检索结论",
                           "parts": [{"text": answer}]}]
-    LOG.append({"task": task["id"], "event": "completed"})
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -82,9 +77,8 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/.well-known/agent-card.json":
             self.reply(200, agent_card())
             return
-        matched = re.fullmatch(r"/tasks/([0-9a-fA-F-]+)", path)
-        if matched:
-            task = TASKS.get(matched.group(1))
+        if path.startswith("/tasks/"):
+            task = TASKS.get(path[len("/tasks/"):])
             self.reply(200, {"task": task}) if task else self.not_found()
             return
         self.not_found()
@@ -93,7 +87,7 @@ class Handler(BaseHTTPRequestHandler):
         if self.path.split("?")[0] != "/message:send":
             self.not_found()
             return
-        # 真实实现必须在这里校验 A2A-Version 请求头，版本对不上要退回错误
+        # 真实实现还必须校验 A2A-Version 请求头
         n = int(self.headers.get("Content-Length", "0"))
         msg = json.loads(self.rfile.read(n) or b"{}").get("message", {})
         text = "".join(p.get("text", "") for p in msg.get("parts", []))

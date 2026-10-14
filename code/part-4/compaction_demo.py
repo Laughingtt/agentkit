@@ -26,7 +26,7 @@ def compact(ctx, budget):
 
     if STRATEGY == "淘汰":
         ctx.keep_by(score=still_needed) # 不看新旧，只看还要不要用
-        return ctx                      # 丢掉的部分：先挪个地方，有用再拿回来
+        return ctx                      # 丢掉的部分：也不另存——淘汰只决定扔谁，不决定放哪
 
     if STRATEGY == "外置":
         ctx.keep(last_n=ctx.tail(2))
