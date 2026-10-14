@@ -69,7 +69,10 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(raw)
 
     def not_found(self):
-        # 协议规定错误响应用 problem+json
+        # 这个 server 走 HTTP+JSON 绑定，所以错误响应用 problem+json
+        # （规范 §11）。若换成 JSON-RPC 绑定，这里要改成
+        # {"jsonrpc":"2.0","id":rid,"error":{"code":-32601,"message":...}}，
+        # 且 HTTP 状态码仍是 200。见 Part 5 Ch27 的 27.5.3。
         self.reply(404, {"title": "Not Found", "status": 404})
 
     def do_GET(self):

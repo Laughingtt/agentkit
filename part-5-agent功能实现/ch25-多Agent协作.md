@@ -227,11 +227,13 @@ graph TD
 
 ```python
 MAX_ATTEMPTS = 3            # 循环硬上限：回环必须有刹车
-STATIC_EDGES = {"start": "plan", "plan": "code", "check": "finish"}
 
 
 def route(state: State) -> str:
-    """动态边：这张表的返回值就是下一个节点名。"""
+    """动态边：这张表的返回值就是下一个节点名。
+
+    循环就是这里的一个分支——check 不通过且没超次数，就退回 code 重来。
+    """
     if state["status"] != "pending":
         return "finish"
     if state["test_report"].startswith("PASS"):
