@@ -23,6 +23,18 @@
 - `docs/superpowers/specs/`：设计 spec
 - `docs/superpowers/plans/`：实现 plan
 
+## 本地构建与预览
+
+依赖 Node.js 24（`^22.13.0 || >=24.0.0`）。
+
+```bash
+npm ci          # 首次或依赖锁文件变更后安装依赖
+npm run build   # 构建静态站点（含死链与 Mermaid 校验），输出到 .vitepress/dist
+npm run preview # 本地预览构建产物，访问 http://localhost:4173/
+```
+
+写作时可改用 `npm run dev` 启动热更新开发服务器（http://localhost:5173/），改动 Markdown 即时生效。
+
 ## 当前进度
 
 - ✅ Part 1–6 spec 与 plan

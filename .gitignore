@@ -219,3 +219,6 @@ __marimo__/
 
 # 审计代理的临时抓取物（HTML/PDF/PPTX dumps），不入库
 .audit-fix-tmp/
+
+# VitePress 构建缓存与产物
+.vitepress/cache/

@@ -88,6 +88,13 @@ export default withMermaid(
     // code/ 目录不在源内，指向它的链接无法在站点中解析，构建时跳过死链检查
     ignoreDeadLinks: [/^\/code\//, /code\/part-\d/],
 
+    // fastdom 是 CJS/UMD 包，直接以 ESM 引入时缺少 default 导出，需预打包
+    vite: {
+      optimizeDeps: {
+        include: ['fastdom'],
+      },
+    },
+
     markdown: {
       theme: { light: 'github-light', dark: 'github-dark' },
       toc: { level: [2, 3] },
