@@ -47,7 +47,7 @@ def search_docs(query: str) -> list[str]:
     return ["doc-pricing-01", "doc-billing-02"]
 
 
-# --- 主链路：嵌套的每一层就是一个 span ---------------------------------------
+# --- 主链路：with 块嵌套几层，trace 树就长几层 -------------------------------
 def handle_user_request(client, question: str) -> str:
     """一次用户请求 = 一条 trace。层级关系由代码的嵌套关系自然形成。"""
     # 最外层：一层 span 覆盖用户的一次完整请求，是整条 trace 的根
@@ -57,7 +57,7 @@ def handle_user_request(client, question: str) -> str:
         input={"question": question},
         metadata={"release": "2026-10-13", "channel": "cli"},
     ) as root:
-        # 第 1 层：规划。让模型决定这活儿要怎么干
+        # 第 1 段：规划。让模型决定这活儿要怎么干
         with client.start_as_current_observation(
             as_type="generation",
             name="plan",
@@ -69,7 +69,7 @@ def handle_user_request(client, question: str) -> str:
             # 用 update 而不是等退出代码块：出问题时这段也留在 trace 里
             plan.update(output=plan_text, usage_details=plan_usage)
 
-        # 第 2 层：工具。工具失败不往上抛到根，只记在自己这一层
+        # 第 2 段：工具。工具失败不往上抛到根，只记在自己这一层
         with client.start_as_current_observation(
             as_type="tool",
             name="search_docs",
@@ -84,7 +84,7 @@ def handle_user_request(client, question: str) -> str:
                             status_message=str(exc))
                 raise
 
-        # 第 3 层：拿检索结果去写最终答案
+        # 第 3 段：拿检索结果去写最终答案
         with client.start_as_current_observation(
             as_type="generation",
             name="compose_answer",
