@@ -1,0 +1,19 @@
+{
+  "name": "agentkit-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "mermaid": "^11.16.0",
+    "vitepress": "^1.6.4",
+    "vitepress-plugin-mermaid": "^2.0.17",
+    "vue": "^3.5.13"
+  },
+  "engines": {
+    "node": "^22.13.0 || >=24.0.0"
+  }
+}
