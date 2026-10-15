@@ -8,7 +8,7 @@
 |---|---|---|---|
 | [Ch17](ch17-harness导览.md) | Harness 导览 | ~6.6k | 19 分钟 |
 | [Ch18](ch18-mcp协议.md) | MCP 协议 | ~9.3k | 27 分钟 |
-| [Ch19](ch19-a2a协议.md) | A2A 协议 | ~8.8k | 25 分钟 |
+| [Ch19](ch19-a2a协议.md) | A2A 协议 | ~8.9k | 25 分钟 |
 | [Ch20](ch20-上下文工程与记忆.md) | 上下文工程与记忆 | ~8.4k | 24 分钟 |
 | [Ch21](ch21-hooks-permissions-sandbox.md) | 权限、隔离与钩子 | ~13.8k | 39 分钟 |
 | [Ch22](ch22-harness小结与衔接.md) | 小结与衔接：把 Part 4 装回一条线 | ~5.5k | 16 分钟 |
