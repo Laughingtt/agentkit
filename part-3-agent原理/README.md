@@ -6,8 +6,8 @@
 
 | 章 | 标题 | 字数 | 阅读时长 |
 |---|---|---|---|
-| [Ch11](ch11-agent认知架构.md) | Agent 认知架构 | ~11.3k | 32 分钟 |
-| [Ch12](ch12-三大范式.md) | 三大范式：ReAct / Reflexion / Plan-and-Execute | ~14.1k | 40 分钟 |
+| [Ch11](ch11-agent认知架构.md) | Agent 认知架构 | ~11.4k | 32 分钟 |
+| [Ch12](ch12-三大范式.md) | 三大范式：ReAct / Reflexion / Plan-and-Execute | ~14.2k | 41 分钟 |
 | [Ch13](ch13-记忆机制.md) | 记忆机制 | ~11.6k | 33 分钟 |
 | [Ch14](ch14-多agent协作.md) | 多 Agent 协作 | ~10.4k | 30 分钟 |
 | [Ch15](ch15-混合系统.md) | 混合系统：规则 + 检索 + 小模型 + 中心 LLM | ~9.7k | 28 分钟 |
