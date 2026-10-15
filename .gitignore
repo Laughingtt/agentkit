@@ -222,3 +222,8 @@ __marimo__/
 
 # VitePress 构建缓存与产物
 .vitepress/cache/
+
+# 第三方依赖：可由 package-lock.json 完整还原，不该进版本库
+# （此前误提交了 5645 个文件，既拖慢 clone/checkout，也让本地 root 属主的
+#   node_modules 成为 rebase 的障碍。已从索引中移除，磁盘上的文件保持不动。）
+node_modules/
