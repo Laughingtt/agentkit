@@ -33,7 +33,7 @@ npm run build   # 构建静态站点（含死链与 Mermaid 校验），输出�
 npm run preview # 本地预览构建产物，访问 http://localhost:4173/
 ```
 
-写作时可改用 `npm run dev` 启动热更新开发服务器（http://localhost:5173/），改动 Markdown 即时生效。
+写作时可改用 `npm run dev` 启动热更新开发服务器（默认 5173 端口），改动 Markdown 即时生效。
 
 ## 当前进度
 
