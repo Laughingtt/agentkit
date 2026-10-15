@@ -130,8 +130,8 @@ LLM（Large Language Model，大语言模型）是这本书要讲的核心对象
 | 1 | 大模型基础（Ch1-Ch5） | LLM 是怎么从语料训出来的、对齐是怎么回事 |
 | 2 | LLM 与 Agent 的演进 | 从 BERT/GPT 到 Claude/Gemini；Agent 范式演进 |
 | 3 | Agent 原理 | 认知架构、ReAct、Plan-and-Execute 等范式 |
-| 4 | Harness 工程 | MCP、A2A、上下文工程、记忆、hooks、permissions |
-| 5 | Agent 功能实现 | tool calling、RAG、多 Agent；复现 Claude Code 核心特性 |
+| 4 | 外壳工程（英文写作 Harness） | 给模型配上读文件、记上下文、调工具的那一圈程序；本书用 MCP、A2A 等公开协议讲它 |
+| 5 | Agent 功能实现 | 工具调用、检索增强、多 Agent；复现主流 coding agent 的核心特性 |
 | 6 | 工业落地 | 部署、可观测性、评测、安全、合规 |
 
 **给读者的阅读建议**：
@@ -140,7 +140,7 @@ LLM（Large Language Model，大语言模型）是这本书要讲的核心对象
 - **Part 3-5 是核心**：如果你只想读一遍就上手写 Agent，这三 Part 必读。
 - **Part 6 选读**：偏工程实践，等你真要上线一个 Agent 产品时再回来翻。
 
-读完 Ch1，你应该能在脑子里画出一张清晰的 AI 全景图——下一章我们聚焦到"神经网络"这一格。
+读完 Ch1，你应该能在脑子里画出一张清晰的 AI 全景图——下一章我们聚焦到图上"DL"（深度学习）那一格，具体说，就是用多层神经网络把机器学习那套方法真正跑起来。
 
 ## 本章小结
 
