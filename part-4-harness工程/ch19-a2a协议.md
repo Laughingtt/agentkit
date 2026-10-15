@@ -188,21 +188,30 @@ v1.0 定义了八个状态。按"任务还能不能动"分三组：
 
 ```mermaid
 stateDiagram-v2
-    [*] --> submitted: 派活
-    submitted --> working: 开工
-    working --> input-required: 缺信息
-    input-required --> working: 补齐了
-    working --> auth-required: 缺凭证
-    auth-required --> working: 凭证到位
-    working --> completed: 干完
-    working --> failed: 干砸了
-    working --> canceled: 被叫停
-    submitted --> rejected: 当场不接
+    state "submitted" as SUB
+    state "working" as WK
+    state "input-required" as IN
+    state "auth-required" as AU
+    state "completed" as OK
+    state "failed" as NG
+    state "canceled" as CA
+    state "rejected" as RJ
 
-    completed --> [*]
-    failed --> [*]
-    canceled --> [*]
-    rejected --> [*]
+    [*] --> SUB: 派活
+    SUB --> WK: 开工
+    WK --> IN: 缺信息
+    IN --> WK: 补齐了
+    WK --> AU: 缺凭证
+    AU --> WK: 凭证到位
+    WK --> OK: 干完
+    WK --> NG: 干砸了
+    WK --> CA: 被叫停
+    SUB --> RJ: 当场不接
+
+    OK --> [*]
+    NG --> [*]
+    CA --> [*]
+    RJ --> [*]
 ```
 
 四个终结状态都是**终点**：任务进了这些状态就不能再往里递消息了。这和职责六「会话与状态」是一回事——**能被后续消息改写的状态才叫活的。**
